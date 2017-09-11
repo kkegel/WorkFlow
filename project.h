@@ -59,6 +59,9 @@ public:
     void set_writeable(bool w);
 
     std::vector<Process*> get_processes();
+    std::vector<Process>* get_processes_p();
+
+    Process* get_process_by_name(QString name);
 
     /**
      * @brief delete_process

@@ -269,3 +269,7 @@ bool FileDataHandler::add_to_index(QString id){
 
     return true;
 }
+
+void FileDataHandler::set_source(QString source){
+    file_manager.set_source(source);
+}

@@ -1,7 +1,8 @@
 #ifndef FILEMANAGER_H
 #define FILEMANAGER_H
 
-#include<QString>
+#include <QString>
+#include <QDir>
 
 #include "projectfilereader.h"
 #include "projectfilewriter.h"
@@ -58,6 +59,8 @@ public:
 
     bool set_to_file(QString id, QString content);
 
+    void set_source(QString source);
+
 private:
 
     /**
@@ -70,6 +73,8 @@ private:
      */
 
     QString PATH_ROOT = "";
+
+    QString get_source();
 
 };
 

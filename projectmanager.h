@@ -27,6 +27,8 @@ public:
     void save_project(Project* p);
     Project* get_project_by_id(QString project_id);
 
+    void set_source(QString source);
+
 private:
 
     DataHandler data_handler;

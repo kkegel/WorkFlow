@@ -27,15 +27,30 @@ void Project::set_writeable(bool w){
     WRITEABLE = w;
 }
 
-std::vector<Process>* Project::get_processes(){
+std::vector<Process*> Project::get_processes(){
 
     std::vector<Process*> procs;
 
-    for(Process p : processes){
-        procs.push_back(&p);
+    for(int i = 0; i < processes.size(); i++){
+        procs.push_back(&(processes[i]));
     }
 
     return procs;
+}
+
+std::vector<Process>* Project::get_processes_p(){
+    return &processes;
+}
+
+Process* Project::get_process_by_name(QString name){
+
+    for(Process *p : get_processes()){
+        if(p->get_name().compare("name") == 0){
+            return p;
+        }
+    }
+
+    return nullptr;
 }
 
 void Project::delete_process(QString name){

@@ -6,6 +6,7 @@
 
 QT       += core gui
 
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = ProjectManagement
@@ -42,7 +43,9 @@ SOURCES += \
     projectmanager.cpp \
     datecontainer.cpp \
     multiscalingbox.cpp \
-    datelib.cpp
+    datelib.cpp \
+    createprojectdialog.cpp \
+    processdialog.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -62,7 +65,11 @@ HEADERS += \
     projectmanager.h \
     datecontainer.h \
     multiscalingbox.h \
-    datelib.h
+    datelib.h \
+    createprojectdialog.h \
+    processdialog.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+    createprojectdialog.ui \
+    processdialog.ui

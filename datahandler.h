@@ -73,6 +73,8 @@ public:
 
     QString get_type();
 
+    void set_source(QString source);
+
 private:
 
     /**

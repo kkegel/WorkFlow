@@ -51,7 +51,7 @@ private:
      * the unic name of the process
      */
 
-    QString NAME;
+    QString NAME = "";
 
     /**
      * @brief responsible

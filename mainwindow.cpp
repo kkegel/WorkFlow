@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
     open_project = nullptr;
 
     init_layout_elements();
-    state = new OverviewState();
+    start();
 }
 
 MainWindow::~MainWindow()
@@ -24,6 +24,18 @@ void MainWindow::init_layout_elements(){
     connect(ui->pb_new, SIGNAL(clicked(bool)), this, SLOT(create_new_element()));
     connect(ui->pb_new_sector, SIGNAL(clicked(bool)), this, SLOT(load_new_sector()));
     connect(ui->pb_reload, SIGNAL(clicked(bool)), this, SLOT(reload_content_from_data());
+    connect(ui->pb_source, SIGNAL(clicked(bool)), this, SLOT(set_source()));
+}
+
+void MainWindow::start(){
+
+    QDate front = first_day_of_kw(ui->sb_from_kw->value(), ui->sb_from_year->value());
+    QDate back = first_day_of_kw(ui->sb_to_kw->value(), ui->sb_to_year->value());
+
+    ms_box = MultiScalingBox(front, back, this->size().width());
+
+    state = new OverviewState();
+
 }
 
 void MainWindow::create_new_element(){
@@ -32,20 +44,27 @@ void MainWindow::create_new_element(){
 
 void MainWindow::load_new_sector(){
 
-    //neuen bereich laden und msbox rescalen
+    QDate front = first_day_of_kw(ui->sb_from_kw->value(), ui->sb_from_year->value());
+    QDate back = first_day_of_kw(ui->sb_to_kw->value(), ui->sb_to_year->value());
+
+    ms_box.set_front_date(front);
+    ms_box.set_back_date(back);
+
+    state->reload();
 }
 
 void MainWindow::open_project_reading_mode(){
 
-    QPushButton s = dynamic_cast<QPushButton*>(sender());
-    open_project = project_manager.get_project_by_id(get_id_from_push_button(s));
-    state->open_project_read(get_id_from_push_button(s));
+    QPushButton* s = dynamic_cast<QPushButton*>(sender());
+    open_project = project_manager.get_project_by_id(get_element_title_from_push_button(s, projects));
+    state->open_project_read(get_elemt_title_from_push_button(s, projects));
 }
 
 void MainWindow::open_project_writing_mode(){
 
-    if(!state->open_project_edit(open_project)){
-        //fehlermeldung zeigen
+    if(!state->open_project_write(open_project)){
+        QErrorMessage* err = new QErrorMessage("Kein Zugriff, da ein anderer PC das Projekt bereits im Schreibmodus geöffnet hat.");
+        err->show();
     }
 }
 
@@ -68,38 +87,72 @@ void MainWindow::reload_content_from_data(){
     state->reload();
 }
 
-void MainWindow::connect_project_cells(){
+void MainWindow::handle_new_project(){
+
+    project_manager.save_project((Project*)trans_pi);
+    project_manager.reload_all_projects();
+    state->reload();
+}
+
+void MainWindow::handle_new_process(){
+
+    open_project->add_process((Process)*trans_pi);
+    save_and_reload();
+}
+
+void MainWindow::save_and_reload(){
+
+    project_manager.save_project(open_project);
+    state->reload();
+}
+
+void MainWindow::set_source(){
+
+    QString source = QFileDialog::getOpenFileName(this, ("Index auswählen"),
+                                                     "/",
+                                                     ("XML-Datei (*.xml)"));
+    if(source != nullptr && !source.isNull()){
+        project_manager.set_source(source);
+    }
+}
+
+void MainWindow::open_process_edit_dialog(){
+
+    QPushButton* s = dynamic_cast<QPushButton*>(sender());
+    trans_pi = open_project->get_process_by_name(get_element_title_from_push_button(s, open_project->get_processes_p()));
+
+    ProcessDialog* pd = new ProcessDialog(trans_pi);
+    pd->show();
+    connect(pd, SIGNAL(accepted()), this, SLOT(save_and_reload()));
+}
+
+void MainWindow::connect_project_cells(QString mode){
 
     int i = 0;
     for(QWidget* w : cells->at(cells->size()-1)){
 
         if(i > 0){
             QPushButton p = dynamic_cast<QPushButton*>(w);
-            connect(p, SIGNAL(clicked()), this, SLOT(open_project_reading_mode()));
+
+            if(mode.compare("overview") == 0){
+                connect(p, SIGNAL(clicked(bool)), this, SLOT(open_project_reading_mode()));
+            }else if(mode.compare("read") == 0){
+                connect(p, SIGNAL(clicked(bool)), this, SLOT(open_project_writing_mode()));
+            }else if(mode.compare("write") == 0){
+                connect(p, SIGNAL(clicked(bool)), this, SLOT(open_process_edit_dialog()));
+            }
         }
     }
 }
 
-void MainWindow::connect_process_cells(){
-
-    int i = 0;
-    for(QWidget* w : cells->at(cells->size()-1)){
-
-        if(i > 0){
-            QPushButton p = dynamic_cast<QPushButton*>(w);
-            connect(p, SIGNAL(clicked()), this, SLOT(open_process_edit_dialog());
-        }
-    }
-}
-
-QString MainWindow::get_id_from_push_button(QPushButton* pb){
+QString MainWindow::get_element_title_from_push_button(QPushButton* pb, std::vector<ProjectItem>* items){
 
     int i;
     for(QWidget* w : cells->at(cells->size()-1)){
         if(i > 0){
-            QPushButton p = dynamic_cast<QPushButton*>(w);
+            QPushButton* p = dynamic_cast<QPushButton*>(w);
             if(p == w){
-                return projects->at(i).get_id();
+                return items->at(i).get_title();
             }
         }
         i++;
@@ -118,6 +171,10 @@ void MainWindow::clear_layout(QLayout* layout){
     }
 }
 
+/*
+ * WindowState - state machine:
+ */
+
 MainWindow::OverviewState::OverviewState(MainWindow* main) : WindowState(main){
 
    _main->ui->pb_edit->setEnabled(false);
@@ -131,108 +188,143 @@ bool MainWindow::OverviewState::open_overview(){
     _main->project_manager.load_active_projects();
     _main->projects = _main->project_manager.get_open_projects();
 
-    QDate front = first_day_of_kw(_main->ui->sb_from_kw->value(), _main->ui->sb_from_year->value());
-    QDate back = first_day_of_kw(_main->ui->sb_to_kw->value(), _main->ui->sb_to_year->value());
-
-    _main->ms_box = MultiScalingBox(front, back, _main->size().width());
     for(int i = 0; i < _main->projects->size(); i++){
         _main->ms_box.add_date_based_item(&(_main->projects->at(i)));
     }
     _main->ms_box.build_layout();
     _main->ui->barLayout->addLayout(_main->ms_box.get_layout_container());
-    _main->connect_project_cells();
+    _main->connect_project_cells("overview");
 }
 
 bool MainWindow::OverviewState::open_project_read(QString id){
 
-    clear_layout(ui->barLayout);
-    ms_box.clear_all();
-    state = new ProjectReadState();
-    state->open_project_read(id);
+    _main->clear_layout(_main->ui->barLayout);
+    _main->ms_box.clear_all();
+    _main->state = new ProjectReadState();
+    _main->state->open_project_read(id);
 
     return true;
 }
 
 bool MainWindow::OverviewState::create_new_element(){
-    //create new project
+
+    _main->trans_pi = new Project();
+    CreateProjectDialog* cpd = new CreateProjectDialog(trans_pi);
+    cpd->show();
+    connect(cpd, SIGNAL(accepted()), _main, SLOT(handle_new_project()));
+
+    return true;
 }
 
 bool MainWindow::OverviewState::reload(){
-    state->open_overview();
+    _main->state->open_overview();
+    return true;
 }
 
 MainWindow::ProjectReadState::ProjectReadState(MainWindow* main) : WindowState(main){
 
-    ui->pb_edit->setEnabled(true);
-    ui->pb_reload->setEnabled(true);
-    ui->pb_new->setEnabled(false);
+    _main->ui->pb_edit->setEnabled(true);
+    _main->ui->pb_reload->setEnabled(true);
+    _main->ui->pb_new->setEnabled(false);
 
-    ui->pb_edit->setText("bearbeiten");
-    connect(ui->pb_edit, SIGNAL(clicked(bool)), this, SLOT(open_project_writing_mode()));
+    _main->ui->pb_edit->setText("bearbeiten");
+    connect(_main->ui->pb_edit, SIGNAL(clicked(bool)), _main, SLOT(open_project_writing_mode()));
 }
 
 MainWindow::ProjectReadState::open_project_read(QString id){
 
-    project_manager.load_active_projects();
-    projects = project_manager.get_open_projects();
+    _main->project_manager.load_active_projects();
+    _main->projects = _main->project_manager.get_open_projects();
 
-    Project* p = project_manager.get_project_by_id(id);
+    Project* p = _main->project_manager.get_project_by_id(id);
+    _main->open_project = p;
 
     for(Process* pc : p->get_processes()){
-       ms_box.add_date_based_item(pc);
+       _main->ms_box.add_date_based_item(pc);
     }
 
-    ms_box.build_layout();
-    ui->barLayout->addLayout->(ms_box.get_layout_container());
-    connect_cells();
+    _main->ms_box.build_layout();
+    _main->ui->barLayout->addLayout->(_main->ms_box.get_layout_container());
+    _main->connect_project_cells("read");
 }
 
 bool MainWindow::ProjectReadState::open_overview(){
 
-    clear_layout(ui->barLayout);
-    ms_box.clear_all();
-    state = new OverviewState();
+    _main->clear_layout(_main->ui->barLayout);
+    _main->ms_box.clear_all();
+    _main->state = new OverviewState();
 
     return true;
 }
 
 bool MainWindow::ProjectReadState::open_project_write(QString id){
 
-    if(!project_manager.get_project_by_id(id)->is_writable()){
+    if(!_main->project_manager.get_project_by_id(id)->is_writable()){
         return false;
     }
-    project_manager.open_edit_mode(id);
+    _main->project_manager.open_edit_mode(id);
 
-    clear_layout(ui->barLayout);
-    ms_box.clear_all();
-    state = new ProjectWriteState();
+    _main->clear_layout(ui->barLayout);
+    _main->ms_box.clear_all();
+    _main->state = new ProjectWriteState();
 
     return true;
 }
 
 bool MainWindow::ProjectReadState::reload(){
-    state->open_project_read(open_project->get_id());
+    _main->state->open_project_read(_main->open_project->get_id());
+    return true;
 }
 
 MainWindow::ProjectWriteState::ProjectWriteState(MainWindow* main) : WindowState(main){
 
-    ui->pb_new->setEnabled(true);
-    ui->pb_reload->setEnabled(false);
-    ui->pb_edit->setEnabled(true);
+    _main->ui->pb_new->setEnabled(true);
+    _main->ui->pb_reload->setEnabled(false);
+    _main->ui->pb_edit->setEnabled(true);
 
-    ui->pb_edit->setText("speichern");
-    connect(ui->pb_edit, SIGNAL(clicked(bool)), this, SLOT(close_project_writing_mode));
+    _main->ui->pb_edit->setText("speichern");
+    connect(_main->ui->pb_edit, SIGNAL(clicked(bool)), _main, SLOT(close_project_writing_mode));
 
 }
 
 bool MainWindow::ProjectWriteState::open_project_read(){
 
+    _main->clear_layout(ui->barLayout);
+    _main->ms_box.clear_all();
+    _main->state = new ProjectReadState(_main->open_project->get_id());
+
+    return true;
 }
 
 bool MainWindow::ProjectWriteState::open_project_write(){
 
+    _main->project_manager.load_active_projects();
+    _main->projects = _main->project_manager.get_open_projects();
+
+    Project* p = _main->project_manager.get_project_by_id(id);
+
+    for(Process* pc : p->get_processes()){
+       _main->ms_box.add_date_based_item(pc);
+    }
+
+    _main->ms_box.build_layout();
+    _main->ui->barLayout->addLayout->(_main->ms_box.get_layout_container());
+    _main->connect_project_cells("write");
+
+    return true;
 }
 
 bool MainWindow::ProjectWriteState::create_new_element(){
 
+    _main->trans_pi = new Process();
+    ProcessDialog* pd = new ProcessDialog(_main->trans_pi);
+    pd->show();
+    connect(pd, SIGNAL(accepted()), _main, SLOT(handle_new_process()));
+
+    return true;
+}
+
+bool MainWindow::ProjectWriteState::reload(){
+    _main->state->open_project_write(_main->open_project->get_id());
+    return true;
 }

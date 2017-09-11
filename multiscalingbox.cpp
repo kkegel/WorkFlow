@@ -31,10 +31,6 @@ std::vector<std::vector<QWidget*>>* MultiScalingBox::get_cells(){
     return &cells;
 }
 
-/*
- * breite der tabelle 80% des fenster
- */
-
 void MultiScalingBox::build_layout(){
 
     columns.clear();
@@ -86,7 +82,7 @@ void MultiScalingBox::build_layout(){
             QString s_state = item->get_state();
 
             if(s_state.compare("OPEN_STATE") == 0){ //green
-                state->setStyleSheet("background-color: #b2ff59");
+                state->setStyleSheet("background-color: #546e7a");
             }else if(s_state.compare("LATE_STATE") == 0){ //red
                 state->setStyleSheet("background-color: #ff5252");
             }else if(s_state.compare("NEARLY_LATE_STATE") == 0){ //yellow
@@ -94,7 +90,7 @@ void MultiScalingBox::build_layout(){
             }else if(s_state.compare("TEMPLATE_STATE")){ //grey
                 state->setStyleSheet("background-color: #b0bec5");
             }else{
-                state->setStyleSheet("background-color: #0277bd");
+                state->setStyleSheet("background-color: #00ff00");//green
             }
 
             columns[columns.size()-2]->addWidget(state);
@@ -155,8 +151,43 @@ void MultiScalingBox::build_header(){
 
 }
 
+/*
+ * breite der tabelle 80% des fenster
+ */
+
 void MultiScalingBox::rescale_layout(){
-//todo
+
+    container->setSpacing(0);
+
+    for(QVBoxLayout* l : columns){
+        l->setSpacing(0);
+    }
+
+    //column 1 max. 20%
+
+    for(QWidget* w : cells[0]){
+        w->setMaximumWidth((int)((double)width_pixel*0.2));
+        ((QLabel*) w)->setMargin(0);
+
+    }
+
+    //bar columns max. 80/number %
+
+    for(int i = 1; i < cells.size()-3; i++){
+        for(QWidget* w : cells[i]){
+            w->setMaximumWidth((0.8/(double)cells.size()-3) * width_pixel);
+            w->setMinimumWidth((0.8/(double)cells.size()-3) * width_pixel);
+            ((QLabel*) w)->setMargin(0);
+        }
+    }
+
+    for(int i = 1; i <= 2; i++){
+        for(QWidget* w : cells[cells.size()-i]){
+            w->setMaximumWidth((int)((double)width_pixel*0.1));
+            w->setMinimumWidth((int)((double)width_pixel*0.07));
+        }
+    }
+
 }
 
 void MultiScalingBox::add_date_based_item(ProjectItem* p){

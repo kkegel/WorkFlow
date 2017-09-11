@@ -2,7 +2,7 @@
 
 FileManager::FileManager(QString path_root)
 {
-    this->PATH_ROOT = path_root;
+    this->PATH_ROOT = get_source();//path_root;
 }
 
 bool FileManager::check_existence(QString id){
@@ -20,3 +20,11 @@ bool FileManager::set_to_file(QString id, QString content){
     return ProjectFileWriter::set_to_file(PATH_ROOT+id+".xml", content);
 }
 
+void FileManager::set_source(QString source){
+    ProjectFileWriter::set_to_file(QDir::currentPath()+"stats.txt", source);
+    PATH_ROOT = source;
+}
+
+QString FileManager::get_source(){
+    return ProjectFileReader.get_file(QDir::currentPath()+"stats.txt");
+}

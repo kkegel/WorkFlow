@@ -74,3 +74,7 @@ int ProjectManager::get_project_index_by_id(QString project_id){
 
     return -1;
 }
+
+void ProjectManager::set_source(QString source){
+    data_handler.set_source(source);
+}

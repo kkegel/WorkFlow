@@ -84,6 +84,8 @@ public:
 
     bool set_project(Project p);
 
+    void set_source(QString source);
+
 private:
 
     /**

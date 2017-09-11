@@ -12,6 +12,9 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QSpinBox>
+#include <QErrorMessage>
+#include <QMessageBox>
+#include <QFileDialog>
 
 #include <vector>
 
@@ -23,6 +26,9 @@
 #include "projectmanager.h"
 #include "datahandler.h"
 #include "state.h"
+
+#include "createprojectdialog.h"
+#include "processdialog.h"
 
 #include "datelib.h"
 
@@ -50,28 +56,36 @@ public:
     WindowState* state;
     MultiScalingBox ms_box;
     Project* open_project;
+    ProjectItem* trans_pi; //to handle data exchange with dialogs
 
     std::vector<std::vector<QWidget*>>* cells;
     std::vector<Project>* projects;
 
+    void start();
+
     void load_base_layout();
     void init_layout_elements();
-    void connect_project_cells();
-    void connect_process_cells();
-    QString get_id_from_push_button(QPushButton* pb);
+    void connect_project_cells(QString  mode);
+
+    QString get_element_title_from_push_button(QPushButton* pb, std::vector<ProjectItem>* items);
 
     void clear_layout(QLayout* layout);
 
 public slots:
 
-    void create_new_element();
-    void load_new_sector();
-    void open_project_reading_mode();
-    void open_project_writing_mode();
-    void close_project_writing_mode();
-    void open_project_overview();
-    void open_process_edit_dialog();
-    void reload_content_from_data();
+    void create_new_element(); //ok
+    void load_new_sector(); //ok
+    void open_project_reading_mode(); //ok
+    void open_project_writing_mode(); //ok
+    void close_project_writing_mode(); //ok
+    void open_project_overview(); //ok
+    void open_process_edit_dialog(); //ok
+    void reload_content_from_data(); //ok
+    void handle_new_project();
+    void handle_new_process();
+    void save_and_reload();
+    void set_source();
+
 };
 
 class MainWindow::WindowState
@@ -82,7 +96,7 @@ public:
 
     bool open_overview(){return false;}
     bool open_project_read(QString id){return false;}
-    bool open_project_edit(QString id){return false;}
+    bool open_project_write(QString id){return false;}
     bool create_new_element(){return false;}
     bool reload(){return false;}
 
