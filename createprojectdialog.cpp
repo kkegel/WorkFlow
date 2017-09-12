@@ -1,7 +1,7 @@
 #include "createprojectdialog.h"
 #include "ui_createprojectdialog.h"
 
-CreateProjectDialog::CreateProjectDialog(QWidget *parent, Project* project) :
+CreateProjectDialog::CreateProjectDialog(Project* project, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::CreateProjectDialog)
 {
@@ -10,7 +10,7 @@ CreateProjectDialog::CreateProjectDialog(QWidget *parent, Project* project) :
     this->project = project;
 
     connect(ui->pb_cancel, SIGNAL(clicked(bool)), this, SLOT(reject()));
-    connect(ui->pb_accept, SIGNAL(clicked(bool)), this, SLOT(check_accept()));
+    connect(ui->pb_save, SIGNAL(clicked(bool)), this, SLOT(check_accept()));
 }
 
 CreateProjectDialog::~CreateProjectDialog()
@@ -37,7 +37,7 @@ void CreateProjectDialog::check_accept(){
             err->showMessage("Auftragsdauer muss größer 0 Tage sein");
             check = false;
         }
-    }catch(exception){
+    }catch(std::exception){
         check = false;
     }
 

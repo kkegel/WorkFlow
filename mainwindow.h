@@ -19,7 +19,7 @@
 #include <vector>
 
 #include "project.h"
-#include "process.h"
+#include "process_.h"
 #include "projectitem.h"
 #include "datecontainer.h"
 #include "multiscalingbox.h"
@@ -55,8 +55,9 @@ public:
     ProjectManager project_manager;
     WindowState* state;
     MultiScalingBox ms_box;
-    Project* open_project;
-    ProjectItem* trans_pi; //to handle data exchange with dialogs
+
+    Project* trans_project;
+    Process* trans_process; //to handle data exchange with dialogs
 
     std::vector<std::vector<QWidget*>>* cells;
     std::vector<Project>* projects;
@@ -67,7 +68,9 @@ public:
     void init_layout_elements();
     void connect_project_cells(QString  mode);
 
-    QString get_element_title_from_push_button(QPushButton* pb, std::vector<ProjectItem>* items);
+    QString get_element_title_from_push_button(QPushButton* pb, std::vector<Project>* items);
+    QString get_element_title_from_push_button(QPushButton* pb, std::vector<Process>* items);
+
 
     void clear_layout(QLayout* layout);
 
@@ -139,6 +142,7 @@ public:
     bool open_project_read(QString id);
     bool open_project_write(QString id);
     bool create_new_element();
+    bool reload();
 
 };
 

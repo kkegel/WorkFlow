@@ -18,12 +18,12 @@ class ProcessState : public State
 {
 public:
 
-    ProcessState();
+    ProcessState() : State(){}
 
-    ProcessState set_open();
-    ProcessState set_late();
-    ProcessState set_completed();
-    ProcessState set_nearly_late();
+    virtual ProcessState* set_open() = 0;
+    virtual ProcessState* set_late() = 0;
+    virtual ProcessState* set_completed()= 0;
+    virtual ProcessState* set_nearly_late() = 0;
 
     /**
      * @brief to_string
@@ -33,7 +33,7 @@ public:
      * by other classes (file backend, window frontend)
      */
 
-    virtual QString to_string();
+    virtual QString to_string() = 0;
 
 };
 
@@ -51,10 +51,10 @@ public:
 
     _P_TemplateState();
 
-    ProcessState set_open();
-    ProcessState set_nearly_late();
+    ProcessState* set_open() override;
+    ProcessState* set_nearly_late() override;
 
-    QString to_string();
+    QString to_string() override;
 
 };
 
@@ -70,11 +70,11 @@ public:
 
     _P_OpenState();
 
-    ProcessState set_late();
-    ProcessState set_completed();
-    ProcessState set_nearly_late();
+    ProcessState* set_late() override;
+    ProcessState* set_completed() override;
+    ProcessState* set_nearly_late() override;
 
-    QString to_string();
+    QString to_string() override;
 
 };
 
@@ -90,9 +90,9 @@ public:
 
     _P_LateState();
 
-    ProcessState set_open();
-    ProcessState set_completed();
-    ProcessState set_nearly_late();
+    ProcessState* set_open() override;
+    ProcessState* set_completed() override;
+    ProcessState* set_nearly_late() override;
 
     QString to_string();
 
@@ -110,11 +110,11 @@ public:
 
     _P_NearlyLateState();
 
-    ProcessState set_open();
-    ProcessState set_completed();
-    ProcessState set_late();
+    ProcessState* set_open() override;
+    ProcessState* set_completed() override;
+    ProcessState* set_late() override;
 
-    QString to_string();
+    QString to_string() override;
 
 };
 
@@ -129,7 +129,7 @@ class _P_CompletedState : public ProcessState
 public:
     _P_CompletedState();
 
-    QString to_string();
+    QString to_string() override;
 };
 
 #endif // PROCESSSTATE_H

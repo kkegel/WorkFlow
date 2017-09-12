@@ -39,9 +39,9 @@ public:
     bool set_completed();
     bool set_nearly_late();
 
-    QString get_state();
+    QString get_state() override;
 
-    QString get_title();
+    QString get_title() override;
 
 private:
 
@@ -68,7 +68,7 @@ private:
      * more in processstate.xml
      */
 
-    ProcessState state;
+    ProcessState* state;
 
     /**
      * @brief determine_state

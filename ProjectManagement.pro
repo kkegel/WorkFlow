@@ -59,7 +59,6 @@ HEADERS += \
     project.h \
     filedatahandler.h \
     state.h \
-    process.h \
     projectstate.h \
     processstate.h \
     projectmanager.h \
@@ -67,7 +66,8 @@ HEADERS += \
     multiscalingbox.h \
     datelib.h \
     createprojectdialog.h \
-    processdialog.h
+    processdialog.h \
+    process_.h
 
 FORMS += \
         mainwindow.ui \

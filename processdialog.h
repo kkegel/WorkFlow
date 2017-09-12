@@ -13,7 +13,7 @@
 #include <QErrorMessage>
 
 #include "projectitem.h"
-#include "process.h"
+#include "process_.h"
 
 namespace Ui {
 class ProcessDialog;
@@ -25,7 +25,7 @@ class ProcessDialog : public QDialog
 
 public:
 
-    explicit ProcessDialog(QWidget *parent = 0, Process* process);
+    explicit ProcessDialog(Process* process, QWidget *parent = 0);
     ~ProcessDialog();
 
 private:

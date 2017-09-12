@@ -38,7 +38,7 @@ public:
      * gets all the ids from projects with the state "open"
      */
 
-    std::vector<QString> get_open_project_ids();
+    virtual std::vector<QString> get_open_project_ids(){}
 
     /**
      * @brief get_all_project_ids
@@ -47,7 +47,7 @@ public:
      * gets all project id's within the current workspace
      */
 
-    std::vector<QString> get_all_project_ids();
+    virtual std::vector<QString> get_all_project_ids(){}
 
     /**
      * @brief get_project_by_id
@@ -58,7 +58,7 @@ public:
      * with the id as data key
      */
 
-    Project get_project_by_id(QString id);
+    virtual Project get_project_by_id(QString id){}
 
     /**
      * @brief set_project
@@ -69,11 +69,11 @@ public:
      * saves the Project in the data backend (persistent)
      */
 
-    bool set_project(Project p);
+    virtual bool set_project(Project p){}
 
     QString get_type();
 
-    void set_source(QString source);
+    virtual void set_source(QString source){}
 
 private:
 

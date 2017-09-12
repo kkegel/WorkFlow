@@ -2,14 +2,14 @@
 
 ProjectManager::ProjectManager()
 {
-    data_handler = FileDataHandler("/home/kkegel/Documents/");
+    data_handler = new FileDataHandler("/home/kkegel/Documents/");
     load_active_projects();
 }
 
 void ProjectManager::load_active_projects(){
 
-    for(QString id : data_handler.get_open_project_ids()){
-        projects.push_back(data_handler.get_project_by_id(id));
+    for(QString id : data_handler->get_open_project_ids()){
+        projects.push_back(data_handler->get_project_by_id(id));
     }
 
 }
@@ -25,7 +25,7 @@ bool ProjectManager::open_edit_mode(QString project_id){
 
     p->set_writeable(false);
 
-    return data_handler.set_project(*p);
+    return data_handler->set_project(*p);
 }
 
 bool ProjectManager::close_edit_mode(QString project_id){
@@ -33,11 +33,11 @@ bool ProjectManager::close_edit_mode(QString project_id){
     Project *p = get_project_by_id(project_id);
     p->set_writeable(true);
 
-    return data_handler.set_project(*p);
+    return data_handler->set_project(*p);
 }
 
 void ProjectManager::save_project(Project* p){
-    data_handler.set_project(*p);
+    data_handler->set_project(*p);
 }
 
 std::vector<Project>* ProjectManager::get_open_projects(){
@@ -47,7 +47,7 @@ std::vector<Project>* ProjectManager::get_open_projects(){
 
 void ProjectManager::reload_project(QString project_id){
 
-    Project p = data_handler.get_project_by_id(project_id);
+    Project p = data_handler->get_project_by_id(project_id);
     projects[get_project_index_by_id(project_id)] = p;
 
 }
@@ -76,5 +76,5 @@ int ProjectManager::get_project_index_by_id(QString project_id){
 }
 
 void ProjectManager::set_source(QString source){
-    data_handler.set_source(source);
+    data_handler->set_source(source);
 }

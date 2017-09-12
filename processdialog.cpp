@@ -1,7 +1,7 @@
 #include "processdialog.h"
 #include "ui_processdialog.h"
 
-ProcessDialog::ProcessDialog(QWidget *parent, Process* process) :
+ProcessDialog::ProcessDialog(Process* process, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ProcessDialog)
 {
@@ -32,7 +32,7 @@ void ProcessDialog::init_data(){
     if(process->get_state().compare("COMPLETED_STATE") == 0){
         ui->cb_done->setChecked(true);
     }
-    if(process->get_state().compare("TEMPLATE_STATE") =! 0){
+    if(!process->get_state().compare("TEMPLATE_STATE") == 0){
         ui->cb_inwork->setChecked(true);
     }
 
@@ -57,7 +57,7 @@ void ProcessDialog::check_accept(){
             err->showMessage("Auftragsdauer muss größer 0 Tage sein");
             check = false;
         }
-    }catch(exception){
+    }catch(std::exception){
         check = false;
     }
 
@@ -71,6 +71,8 @@ void ProcessDialog::check_accept(){
 }
 
 void ProcessDialog::accept(){
+
+    QString hint = "";
 
     if(ui->cb_done->isChecked()){
         hint = "completed";
@@ -86,9 +88,6 @@ void ProcessDialog::accept(){
     QDate end = ui->cw_end->selectedDate();
     QString name = ui->input_name->text();
     QString responsible = ui->input_responsible->text();
-    QString hint = "";
-
-
 
     *process = Process(start, end, name, responsible, hint);
 }

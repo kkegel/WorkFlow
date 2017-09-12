@@ -26,5 +26,5 @@ void FileManager::set_source(QString source){
 }
 
 QString FileManager::get_source(){
-    return ProjectFileReader.get_file(QDir::currentPath()+"stats.txt");
+    return ProjectFileReader::get_file(QDir::currentPath()+"stats.txt");
 }

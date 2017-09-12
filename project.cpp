@@ -71,17 +71,19 @@ void Project::add_process(Process p){
 
 void Project::determine_state(QString state_hint){
 
+    ProjectState* p = new OpenState();
+
     if(state_hint.compare("stock") == 0){
-        state = StockedState();
+        state = new StockedState();
     }else{
         if(is_finished()){
-            state = FinishedState();
+            *state = new FinishedState();
         }else if(is_late()){
-            state = LateState();
+            *state = new LateState;
         }else if(is_nearly_late()){
-            state = NearlyLateState();
+            *state = new NearlyLateState();
         }else{
-            state = OpenState();
+           *state = new OpenState();
         }
     }
 }
@@ -121,25 +123,30 @@ bool Project::is_nearly_late(){
 }
 
 bool Project::set_finished(){
-    state.set_finished();
+    state = state->set_finished();
+    return true;
 }
 
 bool Project::move_to_stock(){
-    state.set_stocked();
+    state = state->set_stocked();
+    return true;
 }
 
 bool Project::set_nearly_late(){
-    state.set_nearly_late();
+    state = state->set_nearly_late();
+    return true;
 }
 
 bool Project::set_late(){
-    state.set_late();
+    state = state->set_late();
+    return true;
 }
 
 bool Project::set_open(){
-    state.set_open();
+    state = state->set_open();
+    return true;
 }
 
 QString Project::get_state(){
-    return state.to_string();
+    return state->to_string();
 }

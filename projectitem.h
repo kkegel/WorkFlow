@@ -24,8 +24,8 @@ public:
 
     QDate get_end_time();
 
-    QString get_state();
-    QString get_title();
+    virtual QString get_state() = 0;
+    virtual QString get_title() = 0;
 
     QDate START_TIME;
     QDate END_TIME;

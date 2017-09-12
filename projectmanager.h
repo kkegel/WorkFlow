@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "project.h"
-#include "process.h"
+#include "process_.h"
 #include "datahandler.h"
 #include "filedatahandler.h"
 #include "projectitem.h"
@@ -31,7 +31,7 @@ public:
 
 private:
 
-    DataHandler data_handler;
+    DataHandler* data_handler;
     std::vector<Project> projects;
 
     int get_project_index_by_id(QString project_id);

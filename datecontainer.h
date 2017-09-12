@@ -11,7 +11,7 @@
 #include <vector>
 
 #include "project.h"
-#include "process.h"
+#include "process_.h"
 #include "projectitem.h"
 #include "projectmanager.h"
 
@@ -28,8 +28,6 @@ public:
     void set_back_date(QDate back);
     int get_width_pixel();
     void set_width_pixel(int width);
-
-private:
 
     QDate front_date;
     QDate back_date;

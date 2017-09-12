@@ -8,8 +8,9 @@
 #include <vector>
 
 #include "projectitem.h"
-#include "process.h"
+#include "process_.h"
 #include "projectstate.h"
+#include "state.h"
 
 /**
  * @brief The Project class
@@ -103,9 +104,9 @@ public:
      * look at projectstate.h for more information
      */
 
-    QString get_state();
+    QString get_state() override;
 
-    QString get_title();
+    QString get_title() override;
 
 private:
 
@@ -120,7 +121,7 @@ private:
      * look at projectstate.h for more information
      */
 
-    ProjectState state;
+    ProjectState* state;
 
     /**
      * @brief determine_state
@@ -132,13 +133,9 @@ private:
 
     void determine_state(QString state_hint);
 
-    /*
-     * some helpful methods working on the projectstate
-     */
-
-    bool is_finished();
-    bool is_late();
     bool is_nearly_late();
+    bool is_late();
+    bool is_finished();
 
 };
 

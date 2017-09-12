@@ -1,21 +1,16 @@
 #include "processstate.h"
 
-ProcessState::ProcessState()
-{
-
-}
-
 _P_TemplateState::_P_TemplateState() : ProcessState()
 {
 
 }
 
-ProcessState _P_TemplateState::set_open(){
-    return _P_OpenState();
+ProcessState* _P_TemplateState::set_open(){
+    return new _P_OpenState();
 }
 
-ProcessState _P_TemplateState::set_nearly_late(){
-    return _P_NearlyLateState();
+ProcessState* _P_TemplateState::set_nearly_late(){
+    return new _P_NearlyLateState();
 }
 
 QString _P_TemplateState::to_string(){
@@ -27,16 +22,16 @@ _P_OpenState::_P_OpenState() : ProcessState()
 
 }
 
-ProcessState _P_OpenState::set_late(){
-    return _P_LateState();
+ProcessState* _P_OpenState::set_late(){
+    return new _P_LateState();
 }
 
-ProcessState _P_OpenState::set_completed(){
-    return _P_CompletedState();
+ProcessState* _P_OpenState::set_completed(){
+    return new _P_CompletedState();
 }
 
-ProcessState _P_OpenState::set_nearly_late(){
-    return _P_NearlyLateState;
+ProcessState* _P_OpenState::set_nearly_late(){
+    return new _P_NearlyLateState();
 }
 
 QString _P_OpenState::to_string(){
@@ -48,16 +43,16 @@ _P_LateState::_P_LateState() : ProcessState()
 
 }
 
-ProcessState _P_LateState::set_open(){
-    return _P_OpenState();
+ProcessState* _P_LateState::set_open(){
+    return new _P_OpenState();
 }
 
-ProcessState _P_LateState::set_completed(){
-    return _P_CompletedState();
+ProcessState* _P_LateState::set_completed(){
+    return new _P_CompletedState();
 }
 
-ProcessState _P_LateState::set_nearly_late(){
-    return _P_NearlyLateState();
+ProcessState* _P_LateState::set_nearly_late(){
+    return new _P_NearlyLateState();
 }
 
 QString _P_LateState::to_string(){
@@ -69,19 +64,19 @@ _P_NearlyLateState::_P_NearlyLateState() : ProcessState()
 
 }
 
-ProcessState _P_NearlyLateState::set_open(){
-    return _P_OpenState();
+ProcessState* _P_NearlyLateState::set_open(){
+    return new _P_OpenState();
 }
 
-ProcessState _P_NearlyLateState::set_late(){
-    return _P_LateState();
+ProcessState* _P_NearlyLateState::set_late(){
+    return new _P_LateState();
 }
 
-ProcessState _P_NearlyLateState::set_completed(){
-    return _P_CompletedState();
+ProcessState* _P_NearlyLateState::set_completed(){
+    return new _P_CompletedState();
 }
 
-ProcessState _P_NearlyLateState::to_string(){
+QString _P_NearlyLateState::to_string(){
     return "NEARLY_LATE_STATE";
 }
 

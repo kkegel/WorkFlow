@@ -43,7 +43,8 @@ void MultiScalingBox::build_layout(){
         QVBoxLayout* col = new QVBoxLayout();
         container->addLayout(col);
         columns.push_back(col);
-        cells.push_back(std::vector<QWidget*>);
+        std::vector<QWidget*> a;
+        cells.push_back(a);
     }
 
     build_header();
@@ -55,7 +56,7 @@ void MultiScalingBox::build_layout(){
             columns[0]->addWidget(title);
             cells[0].push_back(title);
 
-            QDate c(item->get_start_time().toJulianDay());
+            QDate c = QDate::fromJulianDay( item->get_start_time().toJulianDay());
             int col_counter = 1;
 
             while(c.toJulianDay() < item->get_end_time().toJulianDay()){
@@ -77,7 +78,7 @@ void MultiScalingBox::build_layout(){
                 c.addDays(1);
             }
 
-            QLabel* state = new QWidget();
+            QLabel* state = new QLabel();
 
             QString s_state = item->get_state();
 
@@ -197,9 +198,9 @@ void MultiScalingBox::add_date_based_item(ProjectItem* p){
 
 void MultiScalingBox::remove_date_based_item(QString title){
 
-    for(int i = 0; i < item.size(); i++){
+    for(int i = 0; i < items.size(); i++){
         if(items[i]->get_title().compare(title) == 0){
-            items.erase(i);
+            items.erase(items.begin()+i);
             break;
         }
     }
@@ -215,7 +216,7 @@ bool MultiScalingBox::item_is_shown(ProjectItem* p){
     return true;
 }
 
-int MultiSaclingBox::display_state_at_date(ProjectItem* p, QDate d){
+int MultiScalingBox::display_state_at_date(ProjectItem* p, QDate d){
 
     qint64 date_int = QDateTime(d).toSecsSinceEpoch();
 

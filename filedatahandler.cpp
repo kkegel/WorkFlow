@@ -42,7 +42,8 @@ std::vector<QString> FileDataHandler::get_open_project_ids(){
 
     std::vector<QString> open_ids;
 
-    for(QString id : get_all_project_ids()){
+    std::vector<QString> ids = get_all_project_ids();
+    for(QString id : ids){
         if(get_xml_value_from_data(file_manager.get_file(id), "<state>").compare("open") == 0){
             open_ids.push_back(id);
         }
@@ -218,17 +219,17 @@ QString FileDataHandler::get_process_data_from_project(Project p){
 
     QString content = "";
 
-    for(Process proc : p.get_processes()){
+    for(Process* proc : p.get_processes()){
 
         content += "<process>\n";
         content += "<name>\n";
-        content += proc.get_name() + "\n";
+        content += proc->get_name() + "\n";
         content += "</name>\n";
         content += "<pstate>\n";
 
-        if(proc.get_state().compare("TEMPLATE_STATE") == 0){
+        if(proc->get_state().compare("TEMPLATE_STATE") == 0){
             content += "template\n";
-        }else if(proc.get_state().compare("COMPLETED_STATE") == 0){
+        }else if(proc->get_state().compare("COMPLETED_STATE") == 0){
             content += "completed\n";
         }else{
             content += "open\n";
@@ -236,14 +237,14 @@ QString FileDataHandler::get_process_data_from_project(Project p){
 
         content += "</pstate>\n";
         content += "<responsible>\n";
-        content += proc.get_responsible() + "\n";
+        content += proc->get_responsible() + "\n";
         content += "</responsible>\n";
         content += "<time>\n";
         content += "<start-date>\n";
-        content += proc.get_start_time().toString() + "\n";
+        content += proc->get_start_time().toString() + "\n";
         content += "</start-date>\n";
         content += "<end-date>\n";
-        content += proc.get_end_time().toString() + "\n";
+        content += proc->get_end_time().toString() + "\n";
         content += "</time>\n";
         content += "</process>\n";
     }

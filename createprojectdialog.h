@@ -27,7 +27,7 @@ class CreateProjectDialog : public QDialog
 
 public:
 
-    explicit CreateProjectDialog(QWidget *parent = 0, Project* project);
+    explicit CreateProjectDialog(Project* project, QWidget *parent = 0);
     ~CreateProjectDialog();
 
 private:

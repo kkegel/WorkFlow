@@ -1,25 +1,20 @@
 #include "projectstate.h"
 
-ProjectState::ProjectState() : State()
-{
-
-}
-
 OpenState::OpenState() : ProjectState()
 {
 
 }
 
-ProjectState OpenState::set_nearly_late(){
-    return NearlyLateState();
+NearlyLateState* OpenState::set_nearly_late(){
+    return new NearlyLateState();
 }
 
-ProjectState OpenState::set_late(){
-    return LateState();
+LateState* OpenState::set_late(){
+    return new LateState();
 }
 
-ProjectState OpenState::set_finished(){
-    return FinishedState();
+FinishedState* OpenState::set_finished(){
+    return new FinishedState();
 }
 
 QString OpenState::to_string(){
@@ -31,16 +26,16 @@ LateState::LateState() : ProjectState()
 
 }
 
-ProjectState LateState::set_open(){
-    return OpenState();
+OpenState* LateState::set_open(){
+    return new OpenState();
 }
 
-ProjectState LateState::set_nearly_late(){
-    return NearlyLateState();
+NearlyLateState* LateState::set_nearly_late(){
+    return new NearlyLateState();
 }
 
-ProjectState LateState::set_finished(){
-    return FinishedState();
+FinishedState* LateState::set_finished(){
+    return new FinishedState();
 }
 
 QString LateState::to_string(){
@@ -52,16 +47,16 @@ NearlyLateState::NearlyLateState() : ProjectState()
 
 }
 
-ProjectState NearlyLateState::set_open(){
-    return OpenState();
+OpenState* NearlyLateState::set_open(){
+    return new OpenState();
 }
 
-ProjectState NearlyLateState::set_late(){
-    return LateState();
+LateState* NearlyLateState::set_late(){
+    return new LateState();
 }
 
-ProjectState NearlyLateState::set_finished(){
-    return FinishedState();
+FinishedState* NearlyLateState::set_finished(){
+    return new FinishedState();
 }
 
 QString NearlyLateState::to_string(){
@@ -72,12 +67,12 @@ FinishedState::FinishedState() : ProjectState(){
 
 }
 
-ProjectState FinishedState::set_open(){
-    return OpenState();
+OpenState* FinishedState::set_open(){
+    return new OpenState();
 }
 
-ProjectState FinishedState::set_stocked(){
-    return StockedState();
+StockedState* FinishedState::set_stocked(){
+    return new StockedState();
 }
 
 QString FinishedState::to_string(){
@@ -89,8 +84,8 @@ StockedState::StockedState() : ProjectState()
 
 }
 
-ProjectState StockedState::set_open(){
-    return OpenState();
+OpenState* StockedState::set_open(){
+    return new OpenState();
 }
 
 QString StockedState::to_string(){
