@@ -31,6 +31,7 @@ public:
 
     QHBoxLayout* get_layout_container();
     std::vector<std::vector<QWidget*>>* get_cells();
+    std::vector<QVBoxLayout*>* get_columns();
 
     void build_layout();
     void rescale_layout();

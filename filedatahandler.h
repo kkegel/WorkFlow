@@ -45,7 +45,7 @@ public:
      * overrides function from DataHandler
      */
 
-    std::vector<QString> get_all_project_ids();
+    std::vector<QString> get_all_project_ids() override;
 
     /**
      * @brief get_open_project_ids
@@ -56,7 +56,7 @@ public:
      * overrides function from DataHandler
      */
 
-    Project get_project_by_id(QString id);
+    Project get_project_by_id(QString id) override;
 
     /**
      * @brief set_project
@@ -69,7 +69,7 @@ public:
      * overrides function from DataHandler
      */
 
-    std::vector<QString> get_open_project_ids();
+    std::vector<QString> get_open_project_ids() override;
 
     /**
      * @brief get_project_by_id
@@ -82,9 +82,9 @@ public:
      * overrides function from DataHandler
      */
 
-    bool set_project(Project p);
+    bool set_project(Project p) override;
 
-    void set_source(QString source);
+    void set_source(QString source) override;
 
 private:
 

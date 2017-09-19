@@ -52,9 +52,9 @@ void ProcessDialog::check_accept(){
         QDate start = ui->cw_start->selectedDate();
         QDate end = ui->cw_end->selectedDate();
 
-        if(start.toJulianDay() <= end.toJulianDay()){
+        if(start.toJulianDay() >= end.toJulianDay()){
             QErrorMessage* err = new QErrorMessage();
-            err->showMessage("Auftragsdauer muss größer 0 Tage sein");
+            err->showMessage("Prozessdauer muss größer 0 Tage sein");
             check = false;
         }
     }catch(std::exception){
@@ -65,7 +65,7 @@ void ProcessDialog::check_accept(){
         accept();
     }else{
         QErrorMessage* err = new QErrorMessage();
-        err->showMessage("Arbeitsschritt konnte auf Grund Fehler nicht gespeichert werden");
+        err->showMessage("Prozess konnte auf Grund von Fehlern nicht angelegt werden");
     }
 
 }

@@ -20,7 +20,7 @@ QString Project::get_title(){
 }
 
 bool Project::is_writable(){
-    return is_writable();
+    return WRITEABLE;
 }
 
 void Project::set_writeable(bool w){
@@ -77,13 +77,13 @@ void Project::determine_state(QString state_hint){
         state = new StockedState();
     }else{
         if(is_finished()){
-            *state = new FinishedState();
+            state = new FinishedState();
         }else if(is_late()){
-            *state = new LateState;
+            state = new LateState;
         }else if(is_nearly_late()){
-            *state = new NearlyLateState();
+            state = new NearlyLateState();
         }else{
-           *state = new OpenState();
+           state = new OpenState();
         }
     }
 }

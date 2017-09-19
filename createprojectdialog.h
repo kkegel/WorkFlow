@@ -39,8 +39,8 @@ private slots:
 
     void check_accept();
 
-    void accept();
-    void reject();
+    void _m_accept();
+    void _m_reject();
 };
 
 #endif // CREATEPROJECTDIALOG_H

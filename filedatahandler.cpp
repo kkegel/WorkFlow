@@ -80,12 +80,12 @@ Project FileDataHandler::build_project_from_data(QString data){
     }
 
     bool writeable = false;
-    if(get_xml_value_from_data(data, "<writeable").toInt() == 1){
+    if(get_xml_value_from_data(data, "<writeable>").toInt() == 1){
         writeable = true;
     }
 
-    return Project(QDate::fromString(get_xml_value_from_data(data, "<start-date>")),
-                       QDate::fromString(get_xml_value_from_data(data, "<end-date>")),
+    return Project(QDate::fromString(get_xml_value_from_data(data, "<start-time>")),
+                       QDate::fromString(get_xml_value_from_data(data, "<end-time>")),
                        get_xml_value_from_data(data, "<id>"),
                        writeable,
                        processes,
@@ -112,7 +112,7 @@ QString FileDataHandler::build_data_from_project(Project p){
     QString data = QString("<project>\n")
               +  "<data>\n"
                  +  "<writeable>\n"
-                    + writable;
+                    + writable + "\n"
                  +  "</writeable>\n"
                  +  QString("<id>\n")
                     + p.get_id() + "\n"
@@ -123,7 +123,7 @@ QString FileDataHandler::build_data_from_project(Project p){
                  +  "<time>\n"
                      +  "<start-time>\n"
                         + p.get_start_time().toString() + "\n"
-                     +  "</start-time\n"
+                     +  "</start-time>\n"
                      +  "<end-time>\n"
                         + p.get_end_time().toString() + "\n"
                      +  "</end-time>\n"
@@ -150,15 +150,18 @@ QString FileDataHandler::get_xml_value_from_data(QString data, QString opening){
     for(QString line : lines){
         if(line.compare(opening) == 0){
             opened = true;
-        }else if(line.compare("</"+opening.mid(1,opening.size()-2)) == 0){
+            last = line;
+            continue;
+        }else if(line.compare("</"+opening.mid(1,opening.size()-1)) == 0){
             break;
-        }else{
-            if(last.compare(opening) == 0){
-                searched += line;
-            }else{
-                searched += "\n" + line;
-            }
         }
+           if(opened){
+                if(last.compare(opening) == 0){
+                    searched += line;
+                }else{
+                    searched += "\n" + line;
+                }
+           }
         last = line;
     }
 
@@ -259,9 +262,14 @@ bool FileDataHandler::add_to_index(QString id){
 
     QString source_list = get_xml_value_from_data(index, "<index>");
 
+    QString seq_P = "\n";
+    if(source_list.size() == 0){
+        seq_P = "";
+    }
+
     int i = 0;
     while(!file_manager.set_to_file("index", "<index>\n<project-source>\n" + id +
-                                    "</project-source>\n" + source_list + "\n</index>")){
+                                    "\n</project-source>\n" + source_list + seq_P + "</index>")){
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
         if(i++ > 10){
             return false;

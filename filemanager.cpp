@@ -2,7 +2,14 @@
 
 FileManager::FileManager(QString path_root)
 {
-    this->PATH_ROOT = get_source();//path_root;
+    QString s = get_source();
+
+    if(s.size() > 9){
+        this->PATH_ROOT = s.left(s.size()-9);//path_root;
+    }else{
+        this->PATH_ROOT = s;
+    }
+
 }
 
 bool FileManager::check_existence(QString id){
@@ -21,10 +28,12 @@ bool FileManager::set_to_file(QString id, QString content){
 }
 
 void FileManager::set_source(QString source){
-    ProjectFileWriter::set_to_file(QDir::currentPath()+"stats.txt", source);
+    QString path = QDir::currentPath()+"/stats.txt";
+    ProjectFileWriter::set_to_file(path, source);
     PATH_ROOT = source;
 }
 
 QString FileManager::get_source(){
-    return ProjectFileReader::get_file(QDir::currentPath()+"stats.txt");
+    QString path = QDir::currentPath()+"/stats.txt";
+    return ProjectFileReader::get_file(path);
 }

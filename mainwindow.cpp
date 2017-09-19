@@ -13,7 +13,8 @@ MainWindow::MainWindow(QWidget *parent) :
     trans_process = nullptr;
 
     init_layout_elements();
-    start();
+    _r_start();
+    //qApp->processEvents();
 }
 
 MainWindow::~MainWindow()
@@ -29,12 +30,15 @@ void MainWindow::init_layout_elements(){
     connect(ui->pb_source, SIGNAL(clicked(bool)), this, SLOT(set_source()));
 }
 
-void MainWindow::start(){
+void MainWindow::_r_start(){
+
+    //qApp->processEvents();
 
     QDate front = first_day_of_kw(ui->sb_from_kw->value(), ui->sb_from_year->value());
     QDate back = first_day_of_kw(ui->sb_to_kw->value(), ui->sb_to_year->value());
 
     ms_box = MultiScalingBox(front, back, this->size().width());
+    cells = ms_box.get_cells();
 
     state = new OverviewState(this);
 
@@ -130,10 +134,11 @@ void MainWindow::open_process_edit_dialog(){
 
 void MainWindow::connect_project_cells(QString mode){
 
-    int i = 0;
-    for(QWidget* w : cells->at(cells->size()-1)){
+    int top = cells->size()-1;
+    int col = cells->at(top).size();
+    for(int i = 1; i < col; i++){
 
-        if(i > 0){
+            QWidget* w = cells->at(top)[i];
             QPushButton* p = dynamic_cast<QPushButton*>(w);
 
             if(mode.compare("overview") == 0){
@@ -143,8 +148,8 @@ void MainWindow::connect_project_cells(QString mode){
             }else if(mode.compare("write") == 0){
                 connect(p, SIGNAL(clicked(bool)), this, SLOT(open_process_edit_dialog()));
             }
-        }
-    }
+     }
+
 }
 
 QString MainWindow::get_element_title_from_push_button(QPushButton* pb, std::vector<Project>* items){
@@ -197,7 +202,7 @@ MainWindow::OverviewState::OverviewState(MainWindow* main) : WindowState(main){
    _main->ui->pb_edit->setEnabled(false);
    _main->ui->pb_reload->setEnabled(true);
    _main->ui->pb_new->setEnabled(true);
-   _main->state->open_overview();
+   open_overview();
 }
 
 bool MainWindow::OverviewState::open_overview(){
@@ -209,8 +214,13 @@ bool MainWindow::OverviewState::open_overview(){
         _main->ms_box.add_date_based_item(&(_main->projects->at(i)));
     }
     _main->ms_box.build_layout();
-    _main->ui->barLayout->addLayout(_main->ms_box.get_layout_container());
+    _main->content_l = _main->ms_box.get_layout_container();
+    _main->update();
+    _main->ui->barLayout->addLayout(_main->content_l);
+    _main->update();
     _main->connect_project_cells("overview");
+
+    return true;
 }
 
 bool MainWindow::OverviewState::open_project_read(QString id){
@@ -218,7 +228,6 @@ bool MainWindow::OverviewState::open_project_read(QString id){
     _main->clear_layout(_main->ui->barLayout);
     _main->ms_box.clear_all();
     _main->state = new ProjectReadState(_main);
-    _main->state->open_project_read(id);
 
     return true;
 }
@@ -234,6 +243,7 @@ bool MainWindow::OverviewState::create_new_element(){
 }
 
 bool MainWindow::OverviewState::reload(){
+    _main->ms_box.clear_all();
     _main->state->open_overview();
     return true;
 }
@@ -246,6 +256,8 @@ MainWindow::ProjectReadState::ProjectReadState(MainWindow* main) : WindowState(m
 
     _main->ui->pb_edit->setText("bearbeiten");
     connect(_main->ui->pb_edit, SIGNAL(clicked(bool)), _main, SLOT(open_project_writing_mode()));
+
+    open_project_read(_main->trans_project->get_id());
 }
 
 bool MainWindow::ProjectReadState::open_project_read(QString id){
@@ -263,6 +275,8 @@ bool MainWindow::ProjectReadState::open_project_read(QString id){
     _main->ms_box.build_layout();
     _main->ui->barLayout->addLayout(_main->ms_box.get_layout_container());
     _main->connect_project_cells("read");
+
+    return true;
 }
 
 bool MainWindow::ProjectReadState::open_overview(){
@@ -289,6 +303,7 @@ bool MainWindow::ProjectReadState::open_project_write(QString id){
 }
 
 bool MainWindow::ProjectReadState::reload(){
+    _main->ms_box.clear_all();
     _main->state->open_project_read(_main->trans_project->get_id());
     return true;
 }
@@ -302,6 +317,7 @@ MainWindow::ProjectWriteState::ProjectWriteState(MainWindow* main) : WindowState
     _main->ui->pb_edit->setText("speichern");
     connect(_main->ui->pb_edit, SIGNAL(clicked(bool)), _main, SLOT(close_project_writing_mode));
 
+    open_project_write(_main->trans_project->get_id());
 }
 
 bool MainWindow::ProjectWriteState::open_project_read(QString id){
@@ -342,6 +358,7 @@ bool MainWindow::ProjectWriteState::create_new_element(){
 }
 
 bool MainWindow::ProjectWriteState::reload(){
+    _main->ms_box.clear_all();
     _main->state->open_project_write(_main->trans_project->get_id());
     return true;
 }

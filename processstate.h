@@ -14,16 +14,21 @@
  * ProcessState is only implemented by the Process class
  */
 
+class _P_OpenState;
+class _P_NearlyLateState;
+class _P_LateState;
+class _P_CompletedState;
+
 class ProcessState : public State
 {
 public:
 
     ProcessState() : State(){}
 
-    virtual ProcessState* set_open() = 0;
-    virtual ProcessState* set_late() = 0;
-    virtual ProcessState* set_completed()= 0;
-    virtual ProcessState* set_nearly_late() = 0;
+    virtual _P_OpenState* set_open() = 0;
+    virtual _P_NearlyLateState* set_nearly_late() = 0;
+    virtual _P_LateState* set_late() = 0;
+    virtual _P_CompletedState* set_completed()= 0;
 
     /**
      * @brief to_string
@@ -51,8 +56,10 @@ public:
 
     _P_TemplateState();
 
-    ProcessState* set_open() override;
-    ProcessState* set_nearly_late() override;
+    _P_OpenState* set_open() override;
+    _P_NearlyLateState* set_nearly_late() override;
+    _P_LateState* set_late() override {return nullptr;}
+    _P_CompletedState* set_completed() override {return nullptr;}
 
     QString to_string() override;
 
@@ -70,9 +77,10 @@ public:
 
     _P_OpenState();
 
-    ProcessState* set_late() override;
-    ProcessState* set_completed() override;
-    ProcessState* set_nearly_late() override;
+    _P_OpenState* set_open() override {return nullptr;}
+    _P_LateState* set_late() override;
+    _P_CompletedState* set_completed() override;
+    _P_NearlyLateState* set_nearly_late() override;
 
     QString to_string() override;
 
@@ -90,9 +98,10 @@ public:
 
     _P_LateState();
 
-    ProcessState* set_open() override;
-    ProcessState* set_completed() override;
-    ProcessState* set_nearly_late() override;
+    _P_OpenState* set_open() override;
+    _P_CompletedState* set_completed() override;
+    _P_NearlyLateState* set_nearly_late() override;
+    _P_LateState* set_late() override {return nullptr;}
 
     QString to_string();
 
@@ -110,9 +119,10 @@ public:
 
     _P_NearlyLateState();
 
-    ProcessState* set_open() override;
-    ProcessState* set_completed() override;
-    ProcessState* set_late() override;
+    _P_OpenState* set_open() override;
+    _P_CompletedState* set_completed() override;
+    _P_NearlyLateState* set_nearly_late() override {return nullptr;}
+    _P_LateState* set_late() override;
 
     QString to_string() override;
 
@@ -127,7 +137,13 @@ public:
 class _P_CompletedState : public ProcessState
 {
 public:
+
     _P_CompletedState();
+
+    _P_OpenState* set_open() override {return nullptr;}
+    _P_CompletedState* set_completed() override {return nullptr;}
+    _P_NearlyLateState* set_nearly_late() override {return nullptr;}
+    _P_LateState* set_late() override {return nullptr;}
 
     QString to_string() override;
 };

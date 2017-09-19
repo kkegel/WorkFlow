@@ -8,27 +8,32 @@ SystemFileReader::SystemFileReader()
 bool SystemFileReader::check_file_existence(QString path){
 
     QFile file(path);
-    if(!file.open(QIODevice::ReadOnly)) {
+    if(!file.open(QFile::ReadOnly |
+                      QFile::Text))
+        {
+            //qDebug() << "could not open file";
+            return false;
+        }
 
-        file.close();
-        return false;
-    }
     file.close();
     return true;
 }
 
 QString SystemFileReader::get_file(QString path){
 
-     QFile file(path);
-     QString text = "";
+    QFile file(path);
 
-     QTextStream in(&file);
+    if(!file.open(QFile::ReadOnly |
+                      QFile::Text))
+        {
+            //qDebug() << "could not open file";
+            return "";
+        }
 
-     while(!in.atEnd()) {
+    QTextStream in(&file);
+    QString text = in.readAll();
 
-         QString line = in.readLine();
-         text += line;
-     }
-     file.close();
-     return text;
+    file.close();
+
+    return text;
 }

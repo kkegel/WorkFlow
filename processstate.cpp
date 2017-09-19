@@ -5,11 +5,11 @@ _P_TemplateState::_P_TemplateState() : ProcessState()
 
 }
 
-ProcessState* _P_TemplateState::set_open(){
+_P_OpenState* _P_TemplateState::set_open(){
     return new _P_OpenState();
 }
 
-ProcessState* _P_TemplateState::set_nearly_late(){
+_P_NearlyLateState* _P_TemplateState::set_nearly_late(){
     return new _P_NearlyLateState();
 }
 
@@ -22,15 +22,15 @@ _P_OpenState::_P_OpenState() : ProcessState()
 
 }
 
-ProcessState* _P_OpenState::set_late(){
+_P_LateState* _P_OpenState::set_late(){
     return new _P_LateState();
 }
 
-ProcessState* _P_OpenState::set_completed(){
+_P_CompletedState* _P_OpenState::set_completed(){
     return new _P_CompletedState();
 }
 
-ProcessState* _P_OpenState::set_nearly_late(){
+_P_NearlyLateState* _P_OpenState::set_nearly_late(){
     return new _P_NearlyLateState();
 }
 
@@ -43,15 +43,15 @@ _P_LateState::_P_LateState() : ProcessState()
 
 }
 
-ProcessState* _P_LateState::set_open(){
+_P_OpenState* _P_LateState::set_open(){
     return new _P_OpenState();
 }
 
-ProcessState* _P_LateState::set_completed(){
+_P_CompletedState* _P_LateState::set_completed(){
     return new _P_CompletedState();
 }
 
-ProcessState* _P_LateState::set_nearly_late(){
+_P_NearlyLateState* _P_LateState::set_nearly_late(){
     return new _P_NearlyLateState();
 }
 
@@ -64,15 +64,15 @@ _P_NearlyLateState::_P_NearlyLateState() : ProcessState()
 
 }
 
-ProcessState* _P_NearlyLateState::set_open(){
+_P_OpenState* _P_NearlyLateState::set_open(){
     return new _P_OpenState();
 }
 
-ProcessState* _P_NearlyLateState::set_late(){
+_P_LateState* _P_NearlyLateState::set_late(){
     return new _P_LateState();
 }
 
-ProcessState* _P_NearlyLateState::set_completed(){
+_P_CompletedState* _P_NearlyLateState::set_completed(){
     return new _P_CompletedState();
 }
 

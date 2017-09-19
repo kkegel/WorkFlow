@@ -32,9 +32,11 @@ public:
 
     OpenState();
 
+    OpenState* set_open() override {return nullptr;}
     NearlyLateState* set_nearly_late() override;
     LateState* set_late() override;
     FinishedState* set_finished() override;
+    StockedState* set_stocked() override {return nullptr;}
 
     QString to_string() override;
 };
@@ -47,7 +49,9 @@ public:
 
     OpenState* set_open() override;
     NearlyLateState* set_nearly_late() override;
+    LateState* set_late() override {return nullptr;}
     FinishedState* set_finished() override;
+    StockedState* set_stocked() override {return nullptr;}
 
     QString to_string() override;
 };
@@ -59,8 +63,10 @@ public:
     NearlyLateState();
 
     OpenState* set_open() override;
+    NearlyLateState* set_nearly_late() override {return nullptr;}
     LateState* set_late() override;
     FinishedState* set_finished() override;
+    StockedState* set_stocked() override {return nullptr;}
 
     QString to_string() override;
 };
@@ -72,6 +78,9 @@ public:
     FinishedState();
 
     OpenState* set_open() override;
+    NearlyLateState* set_nearly_late() override {return nullptr;}
+    LateState* set_late() override {return nullptr;}
+    FinishedState* set_finished() override {return nullptr;}
     StockedState* set_stocked() override;
 
     QString to_string() override;
@@ -84,6 +93,11 @@ public:
     StockedState();
 
     OpenState* set_open() override;
+    NearlyLateState* set_nearly_late() override {return nullptr;}
+    LateState* set_late() override {return nullptr;}
+    FinishedState* set_finished() override {return nullptr;}
+    StockedState* set_stocked() override {return nullptr;}
+
 
     QString to_string() override;
 };

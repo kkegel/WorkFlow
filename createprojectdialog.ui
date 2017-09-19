@@ -20,7 +20,7 @@
    <item>
     <widget class="QLabel" name="label_4">
      <property name="text">
-      <string>Neues Project anlegen:</string>
+      <string>Neues Projekt anlegen:</string>
      </property>
     </widget>
    </item>
@@ -34,7 +34,7 @@
    <item>
     <widget class="QLabel" name="label_3">
      <property name="text">
-      <string>Aufragnummer:</string>
+      <string>Projektkennung:</string>
      </property>
     </widget>
    </item>

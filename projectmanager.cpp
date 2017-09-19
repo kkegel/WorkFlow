@@ -8,7 +8,10 @@ ProjectManager::ProjectManager()
 
 void ProjectManager::load_active_projects(){
 
-    for(QString id : data_handler->get_open_project_ids()){
+    std::vector<QString>ids = data_handler->get_open_project_ids();
+    projects.clear();
+
+    for(QString id : ids){
         projects.push_back(data_handler->get_project_by_id(id));
     }
 

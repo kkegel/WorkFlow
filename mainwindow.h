@@ -1,10 +1,12 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QApplication>
 #include <QMainWindow>
 #include <QDate>
 #include <QDateTime>
 #include <QString>
+#include <QDebug>
 
 #include <QLayout>
 #include <QHBoxLayout>
@@ -62,7 +64,9 @@ public:
     std::vector<std::vector<QWidget*>>* cells;
     std::vector<Project>* projects;
 
-    void start();
+    QHBoxLayout* content_l;
+
+    void _r_start();
 
     void load_base_layout();
     void init_layout_elements();
@@ -97,11 +101,11 @@ public:
 
     WindowState(MainWindow* main){this->_main = main;}
 
-    bool open_overview(){return false;}
-    bool open_project_read(QString id){return false;}
-    bool open_project_write(QString id){return false;}
-    bool create_new_element(){return false;}
-    bool reload(){return false;}
+    virtual bool open_overview() = 0;
+    virtual bool open_project_read(QString id) = 0;
+    virtual bool open_project_write(QString id) = 0;
+    virtual bool create_new_element() = 0;
+    virtual bool reload() = 0;
 
     MainWindow* _main;
 
@@ -113,10 +117,11 @@ public:
 
     OverviewState(MainWindow* main);
 
-    bool open_overview();
-    bool open_project_read(QString id);
-    bool create_new_element();
-    bool reload();
+    bool open_overview() override;
+    bool open_project_write(QString id) override {return false;}
+    bool open_project_read(QString id) override;
+    bool create_new_element() override;
+    bool reload() override;
 
 };
 
@@ -126,10 +131,11 @@ public:
 
     ProjectReadState(MainWindow* main);
 
-    bool open_overview();
-    bool open_project_write(QString id);
-    bool open_project_read(QString id);
-    bool reload();
+    bool open_overview() override;
+    bool open_project_write(QString id) override;
+    bool open_project_read(QString id) override;
+    bool create_new_element() override {return false;}
+    bool reload() override;
 
 };
 
@@ -139,10 +145,11 @@ public:
 
     ProjectWriteState(MainWindow* main);
 
-    bool open_project_read(QString id);
-    bool open_project_write(QString id);
-    bool create_new_element();
-    bool reload();
+    bool open_overview() override {return false;}
+    bool open_project_read(QString id) override;
+    bool open_project_write(QString id) override;
+    bool create_new_element() override;
+    bool reload() override;
 
 };
 
