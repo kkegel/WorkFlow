@@ -45,7 +45,7 @@ std::vector<Process>* Project::get_processes_p(){
 Process* Project::get_process_by_name(QString name){
 
     for(Process *p : get_processes()){
-        if(p->get_name().compare("name") == 0){
+        if(p->get_name().compare(name) == 0){
             return p;
         }
     }
@@ -148,5 +148,8 @@ bool Project::set_open(){
 }
 
 QString Project::get_state(){
-    return state->to_string();
+    if(state != NULL){
+        return state->to_string();
+    }
+    return "";
 }

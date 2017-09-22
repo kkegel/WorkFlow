@@ -195,13 +195,14 @@ Process FileDataHandler::get_process_from_data(QString data, int number_process)
     int iterator = 0;
 
     for(QString line : lines){
-        if(line.compare("<process>")){
+        if(line.compare("<process>") == 0){
          process_counter++;
          if(process_counter == number_process){
              start = iterator;
              break;
          }
         }
+        iterator++;
     }
 
     QString process_data = "";
@@ -248,6 +249,7 @@ QString FileDataHandler::get_process_data_from_project(Project p){
         content += "</start-date>\n";
         content += "<end-date>\n";
         content += proc->get_end_time().toString() + "\n";
+        content += "</end-date>\n";
         content += "</time>\n";
         content += "</process>\n";
     }

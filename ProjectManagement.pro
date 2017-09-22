@@ -73,3 +73,5 @@ FORMS += \
         mainwindow.ui \
     createprojectdialog.ui \
     processdialog.ui
+
+RC_FILE += myapp.rc

@@ -30,7 +30,6 @@ public:
     QDate START_TIME;
     QDate END_TIME;
 
-
 private:
 
 

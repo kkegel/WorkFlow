@@ -59,7 +59,7 @@ private:
      * NOT the creator by default!
      */
 
-    QString responsible;
+    QString responsible = "";
 
     /**
      * @brief state
@@ -68,7 +68,7 @@ private:
      * more in processstate.xml
      */
 
-    ProcessState* state;
+    ProcessState* state = NULL;
 
     /**
      * @brief determine_state

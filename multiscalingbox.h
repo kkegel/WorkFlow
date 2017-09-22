@@ -33,7 +33,7 @@ public:
     std::vector<std::vector<QWidget*>>* get_cells();
     std::vector<QVBoxLayout*>* get_columns();
 
-    void build_layout();
+    void build_layout(QString mode = "_t_over");
     void rescale_layout();
 
     void add_date_based_item(ProjectItem* p);

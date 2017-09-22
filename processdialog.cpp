@@ -29,11 +29,14 @@ void ProcessDialog::init_data(){
     ui->cw_start->setSelectedDate(process->get_start_time());
     ui->cw_end->setSelectedDate(process->get_end_time());
 
-    if(process->get_state().compare("COMPLETED_STATE") == 0){
-        ui->cb_done->setChecked(true);
-    }
-    if(!process->get_state().compare("TEMPLATE_STATE") == 0){
-        ui->cb_inwork->setChecked(true);
+    if(process->get_state() != NULL){
+
+        if(process->get_state().compare("COMPLETED_STATE") == 0){
+            ui->cb_done->setChecked(true);
+        }
+        if(!process->get_state().compare("TEMPLATE_STATE") == 0){
+            ui->cb_inwork->setChecked(true);
+        }
     }
 
 }
@@ -43,7 +46,7 @@ void ProcessDialog::check_accept(){
     bool check = true;
 
     try{
-        if(ui->input_name->text().compare("") || ui->input_responsible->text().compare("")){
+        if(ui->input_name->text().compare("") == 0 || ui->input_responsible->text().compare("") == 0){
             QErrorMessage* err = new QErrorMessage();
             err->showMessage("Eingabefelder dürfen nicht leer sein");
             check = false;
@@ -62,7 +65,7 @@ void ProcessDialog::check_accept(){
     }
 
     if(check){
-        accept();
+        _m_accept();
     }else{
         QErrorMessage* err = new QErrorMessage();
         err->showMessage("Prozess konnte auf Grund von Fehlern nicht angelegt werden");
@@ -70,7 +73,7 @@ void ProcessDialog::check_accept(){
 
 }
 
-void ProcessDialog::accept(){
+void ProcessDialog::_m_accept(){
 
     QString hint = "";
 
@@ -84,11 +87,13 @@ void ProcessDialog::accept(){
         }
     }
 
-    QDate start = ui->cw_start->selectedDate();
+    QDate start = ui->cw_start->selectedDate().addDays(-1);
     QDate end = ui->cw_end->selectedDate();
     QString name = ui->input_name->text();
     QString responsible = ui->input_responsible->text();
 
     *process = Process(start, end, name, responsible, hint);
+
+    accept();
 }
 

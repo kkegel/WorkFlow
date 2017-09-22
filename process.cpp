@@ -33,7 +33,7 @@ void Process::determine_state(QString state_hint){
             if(today.dayOfWeek() < 6){
                 day_count++;
             }
-            today.addDays(1);
+            today = today.addDays(1);
         }
 
         if(day_count <= 1){
@@ -72,5 +72,8 @@ bool Process::set_completed(){
 }
 
 QString Process::get_state(){
-    return state->to_string();
+    if(state != NULL){
+        return state->to_string();
+    }
+    return "";
 }

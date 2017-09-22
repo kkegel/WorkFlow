@@ -28,6 +28,7 @@ void MainWindow::init_layout_elements(){
     connect(ui->pb_new_sector, SIGNAL(clicked(bool)), this, SLOT(load_new_sector()));
     connect(ui->pb_reload, SIGNAL(clicked(bool)), this, SLOT(reload_content_from_data()));
     connect(ui->pb_source, SIGNAL(clicked(bool)), this, SLOT(set_source()));
+    connect(ui->pb_back, SIGNAL(clicked(bool)), this, SLOT(open_project_overview()));
 }
 
 void MainWindow::_r_start(){
@@ -62,8 +63,8 @@ void MainWindow::load_new_sector(){
 void MainWindow::open_project_reading_mode(){
 
     QPushButton* s = dynamic_cast<QPushButton*>(sender());
-    trans_project = project_manager.get_project_by_id(get_element_title_from_push_button(s, projects));
-    state->open_project_read(get_element_title_from_push_button(s, projects));
+    trans_project = project_manager.get_project_by_id(s->objectName());
+    state->open_project_read(trans_project->get_id());
 }
 
 void MainWindow::open_project_writing_mode(){
@@ -76,9 +77,9 @@ void MainWindow::open_project_writing_mode(){
 
 void MainWindow::close_project_writing_mode(){
 
+    trans_project->set_writeable(true);
     project_manager.save_project(trans_project);
     state->open_project_read(trans_project->get_id());
-
 }
 
 void MainWindow::open_project_overview(){
@@ -119,13 +120,17 @@ void MainWindow::set_source(){
                                                      ("XML-Datei (*.xml)"));
     if(source != nullptr && !source.isNull()){
         project_manager.set_source(source);
+        QErrorMessage* em = new QErrorMessage();
+        em->showMessage("Änderungen wurden übernommen. Bitte starten sie das Programm neu. "
+                        "Sollte es zu unerwartetem Verhalten kommen, wenden sie sich bitte an die zuständige Fachperson.");
+
     }
 }
 
 void MainWindow::open_process_edit_dialog(){
 
     QPushButton* s = dynamic_cast<QPushButton*>(sender());
-    trans_process = trans_project->get_process_by_name(get_element_title_from_push_button(s, trans_project->get_processes_p()));
+    trans_process = trans_project->get_process_by_name(s->objectName());
 
     ProcessDialog* pd = new ProcessDialog(trans_process);
     pd->show();
@@ -144,7 +149,8 @@ void MainWindow::connect_project_cells(QString mode){
             if(mode.compare("overview") == 0){
                 connect(p, SIGNAL(clicked(bool)), this, SLOT(open_project_reading_mode()));
             }else if(mode.compare("read") == 0){
-                connect(p, SIGNAL(clicked(bool)), this, SLOT(open_project_writing_mode()));
+                p->setEnabled(false);
+                //connect(p, SIGNAL(clicked(bool)), this, SLOT(open_project_writing_mode()));
             }else if(mode.compare("write") == 0){
                 connect(p, SIGNAL(clicked(bool)), this, SLOT(open_process_edit_dialog()));
             }
@@ -155,10 +161,12 @@ void MainWindow::connect_project_cells(QString mode){
 QString MainWindow::get_element_title_from_push_button(QPushButton* pb, std::vector<Project>* items){
 
     int i;
-    for(QWidget* w : cells->at(cells->size()-1)){
+    int s = cells->size();
+    for(int i = 0; i < cells->at(s-1).size()-1; i++){
         if(i > 0){
-            QPushButton* p = dynamic_cast<QPushButton*>(w);
-            if(p == w){
+            QString id = items->at(i).get_title();
+            QPushButton* p = dynamic_cast<QPushButton*>(cells->at(s-1)[i]);
+            if(p == pb){
                 return items->at(i).get_title();
             }
         }
@@ -173,7 +181,7 @@ QString MainWindow::get_element_title_from_push_button(QPushButton* pb, std::vec
     for(QWidget* w : cells->at(cells->size()-1)){
         if(i > 0){
             QPushButton* p = dynamic_cast<QPushButton*>(w);
-            if(p == w){
+            if(p == pb){
                 return items->at(i).get_title();
             }
         }
@@ -202,6 +210,9 @@ MainWindow::OverviewState::OverviewState(MainWindow* main) : WindowState(main){
    _main->ui->pb_edit->setEnabled(false);
    _main->ui->pb_reload->setEnabled(true);
    _main->ui->pb_new->setEnabled(true);
+   _main->ui->pb_source->setEnabled(true);
+   _main->ui->pb_back->setEnabled(false);
+   _main->ui->lbl_title->setText(" ");
    open_overview();
 }
 
@@ -252,9 +263,13 @@ MainWindow::ProjectReadState::ProjectReadState(MainWindow* main) : WindowState(m
 
     _main->ui->pb_edit->setEnabled(true);
     _main->ui->pb_reload->setEnabled(true);
+    _main->ui->pb_source->setEnabled(false);
     _main->ui->pb_new->setEnabled(false);
+    _main->ui->pb_back->setEnabled(true);
 
     _main->ui->pb_edit->setText("bearbeiten");
+    _main->ui->lbl_title->setText(_main->trans_project->get_id());
+    disconnect(_main->ui->pb_edit, SIGNAL(clicked(bool)), _main, SLOT(close_project_writing_mode()));
     connect(_main->ui->pb_edit, SIGNAL(clicked(bool)), _main, SLOT(open_project_writing_mode()));
 
     open_project_read(_main->trans_project->get_id());
@@ -265,14 +280,17 @@ bool MainWindow::ProjectReadState::open_project_read(QString id){
     _main->project_manager.load_active_projects();
     _main->projects = _main->project_manager.get_open_projects();
 
+    /*
     Project* p = _main->project_manager.get_project_by_id(id);
     _main->trans_project = p;
+    */
 
-    for(Process* pc : p->get_processes()){
-       _main->ms_box.add_date_based_item(pc);
+        _main->ms_box.add_date_based_item(_main->trans_project);
+    for(Process* pc : _main->trans_project->get_processes()){
+        _main->ms_box.add_date_based_item(pc);
     }
 
-    _main->ms_box.build_layout();
+    _main->ms_box.build_layout("_f_over");
     _main->ui->barLayout->addLayout(_main->ms_box.get_layout_container());
     _main->connect_project_cells("read");
 
@@ -312,10 +330,14 @@ MainWindow::ProjectWriteState::ProjectWriteState(MainWindow* main) : WindowState
 
     _main->ui->pb_new->setEnabled(true);
     _main->ui->pb_reload->setEnabled(false);
+    _main->ui->pb_source->setEnabled(false);
     _main->ui->pb_edit->setEnabled(true);
+    _main->ui->pb_back->setEnabled(false);
 
     _main->ui->pb_edit->setText("speichern");
-    connect(_main->ui->pb_edit, SIGNAL(clicked(bool)), _main, SLOT(close_project_writing_mode));
+
+    disconnect(_main->ui->pb_edit, SIGNAL(clicked(bool)), _main, SLOT(open_project_writing_mode()));
+    connect(_main->ui->pb_edit, SIGNAL(clicked(bool)), _main, SLOT(close_project_writing_mode()));
 
     open_project_write(_main->trans_project->get_id());
 }
@@ -336,11 +358,12 @@ bool MainWindow::ProjectWriteState::open_project_write(QString id){
 
     Project* p = _main->project_manager.get_project_by_id(id);
 
+    _main->ms_box.add_date_based_item(_main->trans_project);
     for(Process* pc : p->get_processes()){
        _main->ms_box.add_date_based_item(pc);
     }
 
-    _main->ms_box.build_layout();
+    _main->ms_box.build_layout("_f_over");
     _main->ui->barLayout->addLayout(_main->ms_box.get_layout_container());
     _main->connect_project_cells("write");
 

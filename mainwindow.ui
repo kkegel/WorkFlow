@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>ProjectManagement v.0.0</string>
+   <string>ProjectManagement v.1</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -105,6 +105,13 @@
        </spacer>
       </item>
       <item>
+       <widget class="QPushButton" name="pb_back">
+        <property name="text">
+         <string>zurück</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="pb_reload">
         <property name="text">
          <string>aktualisieren</string>
@@ -128,9 +135,16 @@
      </widget>
     </item>
     <item>
+     <widget class="QLabel" name="lbl_title">
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item>
      <layout class="QVBoxLayout" name="mainContainer">
       <property name="topMargin">
-       <number>20</number>
+       <number>0</number>
       </property>
       <item>
        <layout class="QHBoxLayout" name="barLayout"/>
@@ -316,6 +330,9 @@
           <property name="text">
            <string>spät</string>
           </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
          </widget>
         </item>
         <item>
@@ -332,6 +349,9 @@
           <property name="text">
            <string>achtung</string>
           </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
          </widget>
         </item>
         <item>
@@ -346,7 +366,10 @@
            <string notr="true">background-color : #b0bec5;</string>
           </property>
           <property name="text">
-           <string>neutral</string>
+           <string>offen</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
           </property>
          </widget>
         </item>
@@ -362,7 +385,10 @@
            <string notr="true">background-color : #546e7a</string>
           </property>
           <property name="text">
-           <string>offen</string>
+           <string>in arbeit</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
           </property>
          </widget>
         </item>
@@ -379,6 +405,9 @@
           </property>
           <property name="text">
            <string>fertig</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
           </property>
          </widget>
         </item>

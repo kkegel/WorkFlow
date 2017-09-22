@@ -36,7 +36,7 @@ std::vector<QVBoxLayout*>* MultiScalingBox::get_columns(){
     return &columns;
 }
 
-void MultiScalingBox::build_layout(){
+void MultiScalingBox::build_layout(QString mode){
 
     columns.clear();
     cells.clear();
@@ -54,6 +54,7 @@ void MultiScalingBox::build_layout(){
 
     build_header();
 
+    bool first = true;
     for(ProjectItem* item : items){
         if(true/*item_is_shown(item)*/){
 
@@ -93,28 +94,34 @@ void MultiScalingBox::build_layout(){
 
             QString s_state = item->get_state();
 
-            if(s_state.compare("OPEN_STATE") == 0){ //green
+            if(s_state.compare("OPEN_STATE") == 0){
                 state->setStyleSheet("background-color: #546e7a");
             }else if(s_state.compare("LATE_STATE") == 0){ //red
                 state->setStyleSheet("background-color: #ff5252");
             }else if(s_state.compare("NEARLY_LATE_STATE") == 0){ //yellow
                 state->setStyleSheet("background-color: #ffd740");
-            }else if(s_state.compare("TEMPLATE_STATE")){ //grey
+            }else if(s_state.compare("TEMPLATE_STATE") == 0){ //grey
                 state->setStyleSheet("background-color: #b0bec5");
             }else{
-                state->setStyleSheet("background-color: #00ff00");//green
+                state->setStyleSheet("background-color: #9ccc65");//green
             }
 
             columns[columns.size()-2]->addWidget(state);
             cells[cells.size()-2].push_back(state);
 
             QPushButton* pb = new QPushButton("[]");
+            pb->setObjectName(item->get_title());
             pb->setMinimumHeight(35);
             columns[columns.size()-1]->addWidget(pb);
             cells[cells.size()-1].push_back(pb);
 
-            rescale_layout();
+            if(first && mode.compare("_f_over") == 0){
+                pb->setEnabled(false);
+                pb->setText("");
+                first = false;
+            }
 
+            rescale_layout();
         }
     }
 }
@@ -144,11 +151,15 @@ void MultiScalingBox::build_header(){
         QString head_text = "";
 
         if(i % 7 == 1){
-            displayed_days.erase(displayed_days.begin());
+            //displayed_days.erase(displayed_days.begin());
             head_text = "|" + QString::number(start_kw);
             start_kw++;
         }else{
-            head_text = "|";
+            if(shown_days <= 28){
+                head_text = "|";
+            }else{
+                head_text = "";
+            }
         }
 
         head_entry->setText(head_text);
@@ -159,10 +170,12 @@ void MultiScalingBox::build_header(){
     }
 
     QLabel* state = new QLabel("Status");
+    state->setAlignment(Qt::AlignCenter);
     columns[columns.size()-2]->addWidget(state);
     cells[cells.size()-2].push_back(name);
 
     QLabel* open = new QLabel("Öffnen");
+    open->setAlignment(Qt::AlignCenter);
     columns[columns.size()-1]->addWidget(open);
     cells[cells.size()-1].push_back(open);
 
@@ -174,40 +187,8 @@ void MultiScalingBox::build_header(){
 
 void MultiScalingBox::rescale_layout(){
 
+    container->setSpacing(2);
 
-    container->setSpacing(0);
-
-
-/*
-    //column 1 max. 20%
-
-    for(QWidget* w : cells[0]){
-        int x = (int)((double)width_pixel*0.2);
-        w->setMaximumWidth(x);
-        ((QLabel*) w)->setMargin(0);
-
-    }
-
-    //bar columns max. 80/number %
-
-    for(int i = 1; i < cells.size()-3; i++){
-        for(QWidget* w : cells[i]){
-            int z = (0.8/((double)cells.size()-3)) * width_pixel;
-            w->setMaximumWidth(z);
-            w->setMinimumWidth(z);
-            ((QLabel*) w)->setMargin(0);
-        }
-    }
-
-    for(int i = 1; i <= 2; i++){
-        for(QWidget* w : cells[cells.size()-i]){
-            int y1 = (int)((double)width_pixel*0.1);
-            int y2 = (int)((double)width_pixel*0.07);
-            w->setMaximumWidth(y1);
-            w->setMinimumWidth(y2);
-        }
-    }
-*/
 }
 
 void MultiScalingBox::add_date_based_item(ProjectItem* p){
@@ -227,9 +208,7 @@ void MultiScalingBox::remove_date_based_item(QString title){
 
 bool MultiScalingBox::item_is_shown(ProjectItem* p){
 
-    if(QDateTime(p->get_end_time()).toSecsSinceEpoch() <
-            QDateTime(QDate::currentDate()).toSecsSinceEpoch()){
-
+    if(p->get_state().compare("STOCKED_STATE")){
         return false;
     }
     return true;

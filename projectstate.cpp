@@ -60,7 +60,7 @@ FinishedState* NearlyLateState::set_finished(){
 }
 
 QString NearlyLateState::to_string(){
-    return "NEARLYLATE_STATE";
+    return "NEARLY_LATE_STATE";
 }
 
 FinishedState::FinishedState() : ProjectState(){

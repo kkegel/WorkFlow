@@ -38,7 +38,7 @@ private:
 private slots:
 
     void check_accept();
-    void accept();
+    void _m_accept();
 
 };
 

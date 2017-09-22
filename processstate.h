@@ -38,7 +38,7 @@ public:
      * by other classes (file backend, window frontend)
      */
 
-    virtual QString to_string() = 0;
+    virtual QString to_string(){return " ";}
 
 };
 
