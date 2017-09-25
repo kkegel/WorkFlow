@@ -11,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     trans_project = nullptr;
     trans_process = nullptr;
+    user_index = UserIndex(project_manager.get_data_handler());
 
     init_layout_elements();
     _r_start();
@@ -29,6 +30,8 @@ void MainWindow::init_layout_elements(){
     connect(ui->pb_reload, SIGNAL(clicked(bool)), this, SLOT(reload_content_from_data()));
     connect(ui->pb_source, SIGNAL(clicked(bool)), this, SLOT(set_source()));
     connect(ui->pb_back, SIGNAL(clicked(bool)), this, SLOT(open_project_overview()));
+    connect(ui->pb_cmd, SIGNAL(clicked(bool)), this, SLOT(handle_command()));
+    connect(ui->pb_info, SIGNAL(clicked(bool)), this, SLOT(show_info()));
 }
 
 void MainWindow::_r_start(){
@@ -101,6 +104,13 @@ void MainWindow::handle_new_project(){
     state->reload();
 }
 
+void MainWindow::edit_existing_project(){
+
+    CreateProjectDialog* cpd = new CreateProjectDialog(trans_project);
+    cpd->show();
+    connect(cpd, SIGNAL(accepted()), this, SLOT(handle_new_project()));
+}
+
 void MainWindow::handle_new_process(){
 
     trans_project->add_process(*trans_process);
@@ -111,6 +121,65 @@ void MainWindow::save_and_reload(){
 
     project_manager.save_project(trans_project);
     state->reload();
+}
+
+void MainWindow::show_info(){
+
+    HelpDialog* hd = new HelpDialog();
+    hd->show();
+}
+
+void MainWindow::handle_command(){
+
+    QStringList c = commander.execute_command(ui->input_cmd->text());
+    ui->input_cmd->setText("");
+
+    int i = c[2].toInt();
+
+    QErrorMessage* em = new QErrorMessage();
+    UserDialog* ud;
+    if(i == 21){
+        ud = new UserDialog(projects, c[1]);
+    }
+
+    switch(i){
+    case 0:
+        user_index.add_user(c[1]);
+        em->showMessage("Nutzer wurde angelegt");
+        break;
+    case 10:
+        user_index.remove_user();
+        em->showMessage("falls vorhanden, wurde(n) Nutzer gelöscht");
+        break;
+    case 11 :
+        user_index.remove_user(c[1]);
+        em->showMessage("falls vorhanden, wurde(n) Nutzer gelöscht");
+        break;
+    case 20:
+        em->showMessage(user_index.get_all_user_string());
+        break;
+    case 21 :
+        ud->show();
+        break;
+    case 30 :
+        if(ui->pb_reload->isEnabled()){
+            int sw = QDate::currentDate().addDays(-7).weekNumber();
+            int sj = QDate::currentDate().addDays(-7).year();
+            int ew = QDate::currentDate().addDays(7).weekNumber();
+            int ej = QDate::currentDate().addDays(7).year();
+            ui->sb_from_kw->setValue(sw); ui->sb_from_year->setValue(sj);
+            ui->sb_to_kw->setValue(ew); ui->sb_to_year->setValue(sj);
+        ms_box.set_front_date(first_day_of_kw(sw, sj));
+        ms_box.set_back_date(first_day_of_kw(ew, ej));
+        state->reload();
+        }else{
+            em->showMessage("bitte vorerst speichern");
+        }
+        break;
+    case -1 :
+        em->showMessage("Unbekannter Befehl oder fehlerhaftes Argument");
+        break;
+    }
 }
 
 void MainWindow::set_source(){
@@ -132,7 +201,7 @@ void MainWindow::open_process_edit_dialog(){
     QPushButton* s = dynamic_cast<QPushButton*>(sender());
     trans_process = trans_project->get_process_by_name(s->objectName());
 
-    ProcessDialog* pd = new ProcessDialog(trans_process);
+    ProcessDialog* pd = new ProcessDialog(trans_process, user_index.to_string_list());
     pd->show();
     connect(pd, SIGNAL(accepted()), this, SLOT(save_and_reload()));
 }
@@ -152,7 +221,11 @@ void MainWindow::connect_project_cells(QString mode){
                 p->setEnabled(false);
                 //connect(p, SIGNAL(clicked(bool)), this, SLOT(open_project_writing_mode()));
             }else if(mode.compare("write") == 0){
-                connect(p, SIGNAL(clicked(bool)), this, SLOT(open_process_edit_dialog()));
+                if(i == 1){
+                    connect(p, SIGNAL(clicked(bool)), this, SLOT(edit_existing_project()));
+                }else{
+                    connect(p, SIGNAL(clicked(bool)), this, SLOT(open_process_edit_dialog()));
+                }
             }
      }
 
@@ -373,7 +446,7 @@ bool MainWindow::ProjectWriteState::open_project_write(QString id){
 bool MainWindow::ProjectWriteState::create_new_element(){
 
     _main->trans_process = new Process();
-    ProcessDialog* pd = new ProcessDialog(_main->trans_process);
+    ProcessDialog* pd = new ProcessDialog(_main->trans_process, _main->user_index.to_string_list());
     pd->show();
     connect(pd, SIGNAL(accepted()), _main, SLOT(handle_new_process()));
 

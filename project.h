@@ -30,7 +30,7 @@ public:
 
     Project(QDate start_time, QDate end_time, QString ID, bool WRITEABLE,
             std::vector<Process> processes, QString state_hint);
-    Project(){}
+    Project();
 
     /**
      * @brief get_id
@@ -73,6 +73,8 @@ public:
      */
 
     void delete_process(QString name);
+
+    QString get_state_hint();
 
     /**
      * @brief add_process

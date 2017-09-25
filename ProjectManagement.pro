@@ -45,7 +45,10 @@ SOURCES += \
     multiscalingbox.cpp \
     datelib.cpp \
     createprojectdialog.cpp \
-    processdialog.cpp
+    processdialog.cpp \
+    commander.cpp \
+    userdialog.cpp \
+    helpdialog.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -67,11 +70,17 @@ HEADERS += \
     datelib.h \
     createprojectdialog.h \
     processdialog.h \
-    process_.h
+    process_.h \
+    commander.h \
+    userdialog.h \
+    userindex.h \
+    helpdialog.h
 
 FORMS += \
         mainwindow.ui \
     createprojectdialog.ui \
-    processdialog.ui
+    processdialog.ui \
+    userdialog.ui \
+    helpdialog.ui
 
 RC_FILE += myapp.rc

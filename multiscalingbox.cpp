@@ -59,17 +59,34 @@ void MultiScalingBox::build_layout(QString mode){
         if(true/*item_is_shown(item)*/){
 
             QLabel* title = new QLabel(item->get_title());
-            title->setMinimumHeight(35);
-            columns[0]->addWidget(title);
-            cells[0].push_back(title);
+
+            QLabel* time = new QLabel();
+            time->setText(item->get_start_time().toString("dd.MM.yy") + " - " +
+                           item->get_end_time().toString("dd.MM.yy"));
+
+            QWidget* w = new QWidget();
+            w->setMinimumHeight(60);
+            QVBoxLayout* h = new QVBoxLayout(w);
+            h->setSpacing(0);
+            h->addWidget(title);
+            h->addWidget(time);
+
+            if(mode.compare("_f_over") == 0 && !first){
+                Process* p = dynamic_cast<Process*>(item);
+                QLabel* resp = new QLabel(p->get_responsible());
+                h->addWidget(resp);
+            }
+
+            columns[0]->addWidget(w);
+            cells[0].push_back(w);
 
             QDate c = front_date;
             int col_counter = 1;
 
             while(c.toJulianDay() < back_date.toJulianDay()){
 
-                QWidget* cell = new QWidget();
-                cell->setMinimumHeight(35);
+                QFrame* cell = new QFrame();
+                cell->setMinimumHeight(60);
 
                 switch (display_state_at_date(item, c)) {
                 case 0:
@@ -83,6 +100,11 @@ void MultiScalingBox::build_layout(QString mode){
                     break;
                 }
 
+                if(c.toJulianDay() == QDate::currentDate().toJulianDay()){
+                    cell->setFrameShape(QFrame::Box);
+                    cell->setLineWidth(2);
+                }
+
                 columns[col_counter]->addWidget(cell);
                 cells[col_counter].push_back(cell);
                 col_counter++;
@@ -90,7 +112,7 @@ void MultiScalingBox::build_layout(QString mode){
             }
 
             QLabel* state = new QLabel();
-            state->setMinimumHeight(35);
+            state->setMinimumHeight(60);
 
             QString s_state = item->get_state();
 
@@ -111,13 +133,14 @@ void MultiScalingBox::build_layout(QString mode){
 
             QPushButton* pb = new QPushButton("[]");
             pb->setObjectName(item->get_title());
-            pb->setMinimumHeight(35);
+            pb->setMinimumHeight(60);
             columns[columns.size()-1]->addWidget(pb);
             cells[cells.size()-1].push_back(pb);
 
             if(first && mode.compare("_f_over") == 0){
-                pb->setEnabled(false);
-                pb->setText("");
+                w->setStyleSheet("background-color : #bbbbbb");
+                //pb->setEnabled(false);
+                pb->setText("[[]]");
                 first = false;
             }
 
@@ -140,7 +163,7 @@ void MultiScalingBox::build_header(){
             base += diff;
         }
 
-    QLabel* name = new QLabel("Bezeichnung");
+    QLabel* name = new QLabel(" ");
     columns[0]->addWidget(name);
     cells[0].push_back(name);
 
@@ -216,12 +239,12 @@ bool MultiScalingBox::item_is_shown(ProjectItem* p){
 
 int MultiScalingBox::display_state_at_date(ProjectItem* p, QDate d){
 
-    qint64 date_int = QDateTime(d).toSecsSinceEpoch();
+    qint64 date_int = d.toJulianDay();
 
-    if(date_int >= QDateTime(p->get_end_time()).toSecsSinceEpoch()){
+    if(date_int > p->get_end_time().toJulianDay()){
         return 2;//nach ende
     }
-    if(date_int > QDateTime(p->get_start_time()).toSecsSinceEpoch()){
+    if(date_int >= p->get_start_time().toJulianDay()){
         return 0;//in zeit
     }
     return 1;//davor

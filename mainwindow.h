@@ -7,6 +7,7 @@
 #include <QDateTime>
 #include <QString>
 #include <QDebug>
+#include <QStringList>
 
 #include <QLayout>
 #include <QHBoxLayout>
@@ -28,7 +29,11 @@
 #include "projectmanager.h"
 #include "datahandler.h"
 #include "state.h"
+#include "userindex.h"
+#include "commander.h"
 
+#include "userdialog.h"
+#include "helpdialog.h"
 #include "createprojectdialog.h"
 #include "processdialog.h"
 
@@ -57,6 +62,8 @@ public:
     ProjectManager project_manager;
     WindowState* state;
     MultiScalingBox ms_box;
+    UserIndex user_index;
+    Commander commander;
 
     Project* trans_project;
     Process* trans_process; //to handle data exchange with dialogs
@@ -80,18 +87,21 @@ public:
 
 public slots:
 
-    void create_new_element(); //ok
-    void load_new_sector(); //ok
-    void open_project_reading_mode(); //ok
-    void open_project_writing_mode(); //ok
-    void close_project_writing_mode(); //ok
-    void open_project_overview(); //ok
-    void open_process_edit_dialog(); //ok
-    void reload_content_from_data(); //ok
+    void create_new_element();
+    void load_new_sector();
+    void open_project_reading_mode();
+    void open_project_writing_mode();
+    void close_project_writing_mode();
+    void open_project_overview();
+    void open_process_edit_dialog();
+    void reload_content_from_data();
     void handle_new_project();
+    void edit_existing_project();
     void handle_new_process();
     void save_and_reload();
     void set_source();
+    void handle_command();
+    void show_info();
 
 };
 

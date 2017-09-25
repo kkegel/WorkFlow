@@ -7,6 +7,7 @@
 #include <QLayout>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QFrame>
 #include <QLabel>
 #include <QPushButton>
 

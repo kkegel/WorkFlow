@@ -11,6 +11,15 @@ CreateProjectDialog::CreateProjectDialog(Project* project, QWidget *parent) :
 
     connect(ui->pb_cancel, SIGNAL(clicked(bool)), this, SLOT(_m_reject()));
     connect(ui->pb_save, SIGNAL(clicked(bool)), this, SLOT(check_accept()));
+
+    ui->input_id->setText(project->get_id());
+    ui->cw_start->setSelectedDate(project->get_start_time());
+    ui->cw_end->setSelectedDate(project->get_end_time());
+
+    if(project->get_id().compare("") != 0){
+        ui->input_id->setEnabled(false);
+    }
+
 }
 
 CreateProjectDialog::~CreateProjectDialog()
@@ -32,7 +41,7 @@ void CreateProjectDialog::check_accept(){
         QDate start = ui->cw_start->selectedDate();
         QDate end = ui->cw_end->selectedDate();
 
-        if(start.toJulianDay() >= end.toJulianDay()){
+        if(start.toJulianDay() > end.toJulianDay()){
             QErrorMessage* err = new QErrorMessage();
             err->showMessage("Projektdauer muss größer 0 Tage sein");
             check = false;
@@ -62,9 +71,7 @@ void CreateProjectDialog::_m_accept(){
     QDate start = ui->cw_start->selectedDate();
     QDate end = ui->cw_end->selectedDate();
 
-    std::vector<Process> processes;
-
-    *project = Project(start, end, id, true, processes, "open");
+    *project = Project(start, end, id, true, *(project->get_processes_p()), project->get_state_hint());
 
     accept();
 }

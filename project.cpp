@@ -11,6 +11,13 @@ Project::Project(QDate start_time, QDate end_time, QString ID, bool WRITEABLE,
     determine_state(state_hint);
 }
 
+Project::Project() : ProjectItem(QDate::currentDate(), QDate::currentDate()){
+
+    ID = "";
+    WRITEABLE = false;
+    determine_state("open");
+}
+
 QString Project::get_id(){
     return ID;
 }
@@ -25,6 +32,15 @@ bool Project::is_writable(){
 
 void Project::set_writeable(bool w){
     WRITEABLE = w;
+}
+
+QString Project::get_state_hint(){
+
+    if(get_state().compare("STOCKED_STATE") == 0){
+        return "stock";
+    }else{
+        return "open";
+    }
 }
 
 std::vector<Process*> Project::get_processes(){

@@ -72,7 +72,7 @@ bool FileDataHandler::set_project(Project p){
 
 Project FileDataHandler::build_project_from_data(QString data){
 
-    int number_processes = get_number_processes_from_data(data);
+    int number_processes = get_number_elements_from_data(data, "<process>");
     std::vector<Process> processes;
 
     for(int i = 1; i <= number_processes; i++){
@@ -137,7 +137,7 @@ QString FileDataHandler::build_data_from_project(Project p){
     return data;
 }
 
-QString FileDataHandler::get_xml_value_from_data(QString data, QString opening){
+QString FileDataHandler::get_xml_value_from_data(QString data, QString opening, int number){
 
     data.remove('\r'); //remove returns
     QStringList lines = data.split('\n');
@@ -146,42 +146,46 @@ QString FileDataHandler::get_xml_value_from_data(QString data, QString opening){
     QString searched = "";
 
     bool opened = false;
+    int n = 0;
 
     for(QString line : lines){
         if(line.compare(opening) == 0){
-            opened = true;
-            last = line;
-            continue;
-        }else if(line.compare("</"+opening.mid(1,opening.size()-1)) == 0){
+            if(n == number){
+                opened = true;
+                last = line;
+                continue;
+            }
+            n++;
+        }else if(opened && line.compare("</"+opening.mid(1,opening.size()-1)) == 0){
             break;
         }
-           if(opened){
-                if(last.compare(opening) == 0){
-                    searched += line;
-                }else{
-                    searched += "\n" + line;
-                }
-           }
+        if(opened){
+             if(last.compare(opening) == 0){
+                 searched += line;
+             }else{
+                 searched += "\n" + line;
+             }
+        }
         last = line;
     }
 
     return searched;
 }
 
-int FileDataHandler::get_number_processes_from_data(QString data){
+int FileDataHandler::get_number_elements_from_data(QString data, QString element){
 
     data.remove('\r'); //remove returns
     QStringList lines = data.split('\n');
 
-    int number_processes = 0;
+    int number_elements = 0;
 
     for(QString line : lines){
-        if(line.compare("<process>") == 0){
-            number_processes++;
+        if(line.compare(element) == 0){
+            number_elements++;
         }
     }
 
-    return number_processes;
+    return number_elements;
 }
 
 Process FileDataHandler::get_process_from_data(QString data, int number_process){
@@ -196,11 +200,11 @@ Process FileDataHandler::get_process_from_data(QString data, int number_process)
 
     for(QString line : lines){
         if(line.compare("<process>") == 0){
-         process_counter++;
-         if(process_counter == number_process){
-             start = iterator;
-             break;
-         }
+            process_counter++;
+            if(process_counter == number_process){
+                start = iterator;
+                break;
+            }
         }
         iterator++;
     }
@@ -231,10 +235,10 @@ QString FileDataHandler::get_process_data_from_project(Project p){
         content += "</name>\n";
         content += "<pstate>\n";
 
-        if(proc->get_state().compare("TEMPLATE_STATE") == 0){
-            content += "template\n";
-        }else if(proc->get_state().compare("COMPLETED_STATE") == 0){
+        if(proc->get_state().compare("COMPLETED_STATE") == 0){
             content += "completed\n";
+        }else if(proc->get_state().compare("TEMPLATE_STATE") == 0 || !proc->STARTED){
+            content += "template\n";
         }else{
             content += "open\n";
         }
@@ -279,6 +283,33 @@ bool FileDataHandler::add_to_index(QString id){
     }
 
     return true;
+}
+
+void FileDataHandler::set_user(std::vector<QString> users){
+
+    QString content = "<user>\n";
+
+    for(QString u : users){
+        content += "<name>\n";
+        content += u + "\n";
+        content += "</name>\n";
+    }
+    content += "</user>";
+
+    file_manager.set_to_file("__userdata", content);
+}
+
+std::vector<QString> FileDataHandler::get_user(){
+
+    QString data = file_manager.get_file("__userdata");
+    int number = get_number_elements_from_data(data, "<name>");
+
+    std::vector<QString> user;
+
+    for(int i = 0; i < number; i++){
+        user.push_back(get_xml_value_from_data(data, "<name>", i));
+    }
+    return user;
 }
 
 void FileDataHandler::set_source(QString source){

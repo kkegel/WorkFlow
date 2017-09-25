@@ -25,7 +25,14 @@ void Process::determine_state(QString state_hint){
 
     if(state_hint.compare("completed") == 0){
         state = new _P_CompletedState();
+        STARTED = false;
     }else{
+
+        if(state_hint.compare("open") == 0){
+            STARTED = true;
+        }else{
+            STARTED = false;
+        }
 
         QDate today = QDate::currentDate();
         int day_count = 0;

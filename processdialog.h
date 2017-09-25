@@ -5,15 +5,18 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QPushButton>
+#include <QComboBox>
 #include <QLineEdit>
 #include <QCalendarWidget>
 #include <QCheckBox>
 #include <QDate>
 #include <QString>
+#include <QStringList>
 #include <QErrorMessage>
 
 #include "projectitem.h"
 #include "process_.h"
+#include "userindex.h"
 
 namespace Ui {
 class ProcessDialog;
@@ -25,7 +28,7 @@ class ProcessDialog : public QDialog
 
 public:
 
-    explicit ProcessDialog(Process* process, QWidget *parent = 0);
+    explicit ProcessDialog(Process* process, QStringList user, QWidget *parent = 0);
     ~ProcessDialog();
 
 private:

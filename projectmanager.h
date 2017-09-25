@@ -28,6 +28,7 @@ public:
     Project* get_project_by_id(QString project_id);
 
     void set_source(QString source);
+    DataHandler* get_data_handler();
 
 private:
 

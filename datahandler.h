@@ -75,6 +75,9 @@ public:
 
     virtual void set_source(QString source) = 0;
 
+    virtual void set_user(std::vector<QString> users) = 0;
+    virtual std::vector<QString> get_user() = 0;
+
 private:
 
     /**

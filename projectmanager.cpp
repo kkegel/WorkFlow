@@ -78,6 +78,10 @@ int ProjectManager::get_project_index_by_id(QString project_id){
     return -1;
 }
 
+DataHandler* ProjectManager::get_data_handler(){
+    return data_handler;
+}
+
 void ProjectManager::set_source(QString source){
     data_handler->set_source(source);
 }

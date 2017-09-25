@@ -43,6 +43,8 @@ public:
 
     QString get_title() override;
 
+    bool STARTED = false;
+
 private:
 
     /**
@@ -68,7 +70,7 @@ private:
      * more in processstate.xml
      */
 
-    ProcessState* state = NULL;
+    ProcessState* state = new _P_TemplateState;
 
     /**
      * @brief determine_state

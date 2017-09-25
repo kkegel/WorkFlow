@@ -1,13 +1,15 @@
 #include "processdialog.h"
 #include "ui_processdialog.h"
 
-ProcessDialog::ProcessDialog(Process* process, QWidget *parent) :
+ProcessDialog::ProcessDialog(Process* process, QStringList user, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ProcessDialog)
 {
     ui->setupUi(this);
 
     this->process = process;
+
+    ui->cb_responsible->addItems(user);
 
     if(process != nullptr){
         init_data();
@@ -25,7 +27,7 @@ ProcessDialog::~ProcessDialog()
 void ProcessDialog::init_data(){
 
     ui->input_name->setText(process->get_name());
-    ui->input_responsible->setText(process->get_responsible());
+    ui->cb_responsible->setCurrentIndex(ui->cb_responsible->findData(process->get_responsible(), Qt::DisplayRole));
     ui->cw_start->setSelectedDate(process->get_start_time());
     ui->cw_end->setSelectedDate(process->get_end_time());
 
@@ -33,8 +35,9 @@ void ProcessDialog::init_data(){
 
         if(process->get_state().compare("COMPLETED_STATE") == 0){
             ui->cb_done->setChecked(true);
+            ui->cb_inwork->setChecked(true);
         }
-        if(!process->get_state().compare("TEMPLATE_STATE") == 0){
+        if(process->STARTED){
             ui->cb_inwork->setChecked(true);
         }
     }
@@ -46,7 +49,7 @@ void ProcessDialog::check_accept(){
     bool check = true;
 
     try{
-        if(ui->input_name->text().compare("") == 0 || ui->input_responsible->text().compare("") == 0){
+        if(ui->input_name->text().compare("") == 0 || ui->cb_responsible->currentText().compare("") == 0){
             QErrorMessage* err = new QErrorMessage();
             err->showMessage("Eingabefelder dürfen nicht leer sein");
             check = false;
@@ -55,7 +58,7 @@ void ProcessDialog::check_accept(){
         QDate start = ui->cw_start->selectedDate();
         QDate end = ui->cw_end->selectedDate();
 
-        if(start.toJulianDay() >= end.toJulianDay()){
+        if(start.toJulianDay() > end.toJulianDay()){
             QErrorMessage* err = new QErrorMessage();
             err->showMessage("Prozessdauer muss größer 0 Tage sein");
             check = false;
@@ -87,10 +90,10 @@ void ProcessDialog::_m_accept(){
         }
     }
 
-    QDate start = ui->cw_start->selectedDate().addDays(-1);
+    QDate start = ui->cw_start->selectedDate();
     QDate end = ui->cw_end->selectedDate();
     QString name = ui->input_name->text();
-    QString responsible = ui->input_responsible->text();
+    QString responsible = ui->cb_responsible->currentText();
 
     *process = Process(start, end, name, responsible, hint);
 

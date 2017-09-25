@@ -86,6 +86,9 @@ public:
 
     void set_source(QString source) override;
 
+    void set_user(std::vector<QString> users) override;
+    std::vector<QString> get_user() override;
+
 private:
 
     /**
@@ -119,17 +122,17 @@ private:
      * returns the content between this opening and its coorresponding closening tag
      */
 
-    QString get_xml_value_from_data(QString data, QString opening);
+    QString get_xml_value_from_data(QString data, QString opening, int number = 0);
 
     /**
      * @brief get_number_processes_from_data
      * @param data
      * @return
      *
-     * counts how many processes are defined in one project data xml-string
+     * counts how many elements are defined in one project data xml-string
      */
 
-    int get_number_processes_from_data(QString data);
+    int get_number_elements_from_data(QString data, QString element);
 
     /**
      * @brief get_process_from_data
