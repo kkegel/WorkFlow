@@ -1,14 +1,20 @@
 #include "userdialog.h"
 #include "ui_userdialog.h"
 
-UserDialog::UserDialog(std::vector<Project>* projects, QString user, QWidget *parent) :
+UserDialog::UserDialog(std::vector<Project>* projects, QStringList user, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::UserDialog)
 {
     this->user = user;
     this->projects = projects;
+
     ui->setupUi(this);
-    init();
+    user.insert(user.begin(), " ");
+    ui->cb_user->addItems(user);
+
+    connect(ui->pb_close, SIGNAL(clicked(bool)), this, SLOT(accept()));
+    connect(ui->cb_user, SIGNAL(currentIndexChanged(int)), this, SLOT(init()));
+
 }
 
 UserDialog::~UserDialog()
@@ -18,9 +24,8 @@ UserDialog::~UserDialog()
 
 void UserDialog::init(){
 
-    connect(ui->pb_close, SIGNAL(clicked(bool)), this, SLOT(accept()));
-
-    ui->lbl_user->setText(user);
+    clear_layout(ui->layout_content);
+    tasks.clear();
 
     if(projects == nullptr){
         return;
@@ -41,9 +46,11 @@ void UserDialog::init(){
 
 void UserDialog::build_task_table(){
 
+    QString user_s = ui->cb_user->currentText();
+
     for(int i = 0; i < projects->size(); i++){
         for(Process* p : projects->at(i).get_processes()){
-            if(p->get_responsible().compare(user) == 0 && p->get_state().compare("COMPLETED_STATE") != 0){
+            if(p->get_responsible().compare(user_s) == 0 && p->get_state().compare("COMPLETED_STATE") != 0){
                 std::vector<QString> line;
                 line.push_back(projects->at(i).get_id());
                 line.push_back(p->get_name());
@@ -51,5 +58,16 @@ void UserDialog::build_task_table(){
                 tasks.push_back(line);
             }
         }
+    }
+}
+
+void UserDialog::clear_layout(QLayout* layout){
+
+    if(!layout){
+        return;
+    }
+    while(auto item = layout->takeAt(0)){
+        delete item->widget();
+        clear_layout(item->layout());
     }
 }

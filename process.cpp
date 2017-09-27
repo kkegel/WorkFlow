@@ -1,10 +1,12 @@
 #include "process_.h"
 
 Process::Process(QDate start_date, QDate end_date, QString name,
-                 QString responsible, QString state_hint) : ProjectItem(start_date, end_date)
+                 QString responsible, QString state_hint, QString annotation) :
+    ProjectItem(start_date, end_date)
 {
     this->NAME = name;
     this->responsible = responsible;
+    this->annotation = annotation;
 
     determine_state(state_hint);
 }
@@ -19,6 +21,14 @@ QString Process::get_title(){
 
 QString Process::get_responsible(){
     return responsible;
+}
+
+QString Process::get_annotation(){
+    return annotation;
+}
+
+void Process::set_annotation(QString an){
+    this->annotation = an;
 }
 
 void Process::determine_state(QString state_hint){

@@ -24,11 +24,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="lbl_user">
-       <property name="text">
-        <string>&quot; &quot;</string>
-       </property>
-      </widget>
+      <widget class="QComboBox" name="cb_user"/>
      </item>
     </layout>
    </item>

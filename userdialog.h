@@ -3,9 +3,11 @@
 
 #include <QDialog>
 #include <QString>
+#include <QStringList>
 #include <QPushButton>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QComboBox>
 #include <QLabel>
 #include <QLine>
 
@@ -24,19 +26,24 @@ class UserDialog : public QDialog
 
 public:
 
-    explicit UserDialog(std::vector<Project>* projects, QString user, QWidget *parent = 0);
+    explicit UserDialog(std::vector<Project>* projects,
+                        QStringList user, QWidget *parent = 0);
     ~UserDialog();
 
 private:
 
     Ui::UserDialog *ui;
 
-    QString user;
+    QStringList user;
     std::vector<Project>* projects;
     std::vector<std::vector<QString>> tasks;
 
-    void init();
     void build_task_table();
+    void clear_layout(QLayout* layout);
+
+private slots:
+
+    void init();
 
 };
 

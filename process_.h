@@ -23,11 +23,13 @@ class Process : public ProjectItem
 public:
 
     Process(QDate start_date, QDate end_date, QString name,
-            QString responsible, QString state_hint);
+            QString responsible, QString state_hint, QString annotation);
     Process(){}
 
     QString get_name();   
     QString get_responsible();
+    QString get_annotation();
+    void set_annotation(QString an);
 
     /*
      * state actions
@@ -54,6 +56,8 @@ private:
      */
 
     QString NAME = "";
+
+    QString annotation = "";
 
     /**
      * @brief responsible

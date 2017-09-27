@@ -219,7 +219,8 @@ Process FileDataHandler::get_process_from_data(QString data, int number_process)
                        QDate::fromString(get_xml_value_from_data(process_data, "<end-date>")),
                        get_xml_value_from_data(process_data, "<name>"),
                        get_xml_value_from_data(process_data, "<responsible>"),
-                       get_xml_value_from_data(process_data, "<pstate>"));
+                       get_xml_value_from_data(process_data, "<pstate>"),
+                       get_xml_value_from_data(process_data, "<annotation>").replace('$','\n'));
 
 }
 
@@ -247,6 +248,9 @@ QString FileDataHandler::get_process_data_from_project(Project p){
         content += "<responsible>\n";
         content += proc->get_responsible() + "\n";
         content += "</responsible>\n";
+        content += "<annotation>\n";
+        content += proc->get_annotation().replace('\n','$') + "\n";
+        content += "</annotation>\n";
         content += "<time>\n";
         content += "<start-date>\n";
         content += proc->get_start_time().toString() + "\n";

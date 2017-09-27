@@ -34,6 +34,16 @@ void Project::set_writeable(bool w){
     WRITEABLE = w;
 }
 
+bool Project::is_dead_line(QDate date){
+
+    for(Process p : processes){
+        if(date.toJulianDay() == p.get_end_time().toJulianDay()){
+            return true;
+        }
+    }
+    return false;
+}
+
 QString Project::get_state_hint(){
 
     if(get_state().compare("STOCKED_STATE") == 0){

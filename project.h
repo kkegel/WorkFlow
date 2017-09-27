@@ -110,6 +110,8 @@ public:
 
     QString get_title() override;
 
+    bool is_dead_line(QDate date);
+
 private:
 
     QString ID;

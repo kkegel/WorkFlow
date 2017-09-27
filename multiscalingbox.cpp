@@ -90,7 +90,7 @@ void MultiScalingBox::build_layout(QString mode){
 
                 switch (display_state_at_date(item, c)) {
                 case 0:
-                    cell->setStyleSheet("background-color: #1e88e5"); //dabei
+                    cell->setStyleSheet("background-color: #6dcaff"); //dabei
                     break;
                 case 2:
                     cell->setStyleSheet("background-color: #e8eaf6"); //danach
@@ -98,6 +98,13 @@ void MultiScalingBox::build_layout(QString mode){
                 default:
                     cell->setStyleSheet("background-color: #e0f2f1"); //davor
                     break;
+                }
+
+                if(mode.compare("_t_over") == 0){
+                    Project* p = dynamic_cast<Project*>(item);
+                    if(p->is_dead_line(c)){
+                        cell->setStyleSheet("background-color: #1877b5");
+                    }
                 }
 
                 if(c.toJulianDay() == QDate::currentDate().toJulianDay()){

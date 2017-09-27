@@ -1,4 +1,5 @@
 #include "filemanager.h"
+// #include <QErrorMessage>
 
 FileManager::FileManager(QString path_root)
 {
@@ -9,6 +10,9 @@ FileManager::FileManager(QString path_root)
     }else{
         this->PATH_ROOT = s;
     }
+
+   // QErrorMessage* err = new QErrorMessage();
+   // err->showMessage(PATH_ROOT);
 
 }
 
@@ -28,12 +32,14 @@ bool FileManager::set_to_file(QString id, QString content){
 }
 
 void FileManager::set_source(QString source){
-    QString path = QDir::currentPath()+"/stats.txt";
+    QString path = QDir::currentPath();
+    path += "/stats.txt";
     ProjectFileWriter::set_to_file(path, source);
     PATH_ROOT = source;
 }
 
 QString FileManager::get_source(){
-    QString path = QDir::currentPath()+"/stats.txt";
+    QString path = QDir::currentPath();
+    path += "/stats.txt";
     return ProjectFileReader::get_file(path);
 }

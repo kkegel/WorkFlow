@@ -48,7 +48,8 @@ SOURCES += \
     processdialog.cpp \
     commander.cpp \
     userdialog.cpp \
-    helpdialog.cpp
+    helpdialog.cpp \
+    annotationsdialog.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -74,13 +75,15 @@ HEADERS += \
     commander.h \
     userdialog.h \
     userindex.h \
-    helpdialog.h
+    helpdialog.h \
+    annotationsdialog.h
 
 FORMS += \
         mainwindow.ui \
     createprojectdialog.ui \
     processdialog.ui \
     userdialog.ui \
-    helpdialog.ui
+    helpdialog.ui \
+    annotationsdialog.ui
 
 RC_FILE += myapp.rc

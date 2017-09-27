@@ -32,6 +32,9 @@ void MainWindow::init_layout_elements(){
     connect(ui->pb_back, SIGNAL(clicked(bool)), this, SLOT(open_project_overview()));
     connect(ui->pb_cmd, SIGNAL(clicked(bool)), this, SLOT(handle_command()));
     connect(ui->pb_info, SIGNAL(clicked(bool)), this, SLOT(show_info()));
+    connect(ui->pb_today, SIGNAL(clicked(bool)), this, SLOT(show_today()));
+    connect(ui->pb_person, SIGNAL(clicked(bool)), this, SLOT(show_person_dialog()));
+    connect(ui->pb_annotation, SIGNAL(clicked(bool)), this, SLOT(show_annotations()));
 }
 
 void MainWindow::_r_start(){
@@ -129,6 +132,38 @@ void MainWindow::show_info(){
     hd->show();
 }
 
+void MainWindow::show_person_dialog(){
+    UserDialog *ud = new UserDialog(projects, user_index.to_string_list());
+    ud->show();
+}
+
+void MainWindow::show_annotations(){
+    AnnotationsDialog* ad = new AnnotationsDialog(trans_project);
+    ad->show();
+}
+
+void MainWindow::show_today(){
+
+    if(ui->pb_reload->isEnabled()){
+
+        int sw = QDate::currentDate().addDays(-7).weekNumber();
+        int sj = QDate::currentDate().addDays(-7).year();
+        int ew = QDate::currentDate().addDays(12).weekNumber();
+        int ej = QDate::currentDate().addDays(12).year();
+
+        ui->sb_from_kw->setValue(sw); ui->sb_from_year->setValue(sj);
+        ui->sb_to_kw->setValue(ew); ui->sb_to_year->setValue(sj);
+        ms_box.set_front_date(first_day_of_kw(sw, sj));
+        ms_box.set_back_date(first_day_of_kw(ew, ej));
+        state->reload();
+
+    } else{
+
+        QErrorMessage* em = new QErrorMessage();
+        em->showMessage("bitte vorerst speichern");
+    }
+}
+
 void MainWindow::handle_command(){
 
     QStringList c = commander.execute_command(ui->input_cmd->text());
@@ -139,9 +174,10 @@ void MainWindow::handle_command(){
     QErrorMessage* em = new QErrorMessage();
     UserDialog* ud;
     if(i == 21){
-        ud = new UserDialog(projects, c[1]);
+        int j = 0;
+       // ud = new UserDialog(projects, c[1]);
     }
-
+        int k = 0;
     switch(i){
     case 0:
         user_index.add_user(c[1]);
@@ -162,19 +198,7 @@ void MainWindow::handle_command(){
         ud->show();
         break;
     case 30 :
-        if(ui->pb_reload->isEnabled()){
-            int sw = QDate::currentDate().addDays(-7).weekNumber();
-            int sj = QDate::currentDate().addDays(-7).year();
-            int ew = QDate::currentDate().addDays(7).weekNumber();
-            int ej = QDate::currentDate().addDays(7).year();
-            ui->sb_from_kw->setValue(sw); ui->sb_from_year->setValue(sj);
-            ui->sb_to_kw->setValue(ew); ui->sb_to_year->setValue(sj);
-        ms_box.set_front_date(first_day_of_kw(sw, sj));
-        ms_box.set_back_date(first_day_of_kw(ew, ej));
-        state->reload();
-        }else{
-            em->showMessage("bitte vorerst speichern");
-        }
+        show_today();
         break;
     case -1 :
         em->showMessage("Unbekannter Befehl oder fehlerhaftes Argument");
@@ -285,6 +309,7 @@ MainWindow::OverviewState::OverviewState(MainWindow* main) : WindowState(main){
    _main->ui->pb_new->setEnabled(true);
    _main->ui->pb_source->setEnabled(true);
    _main->ui->pb_back->setEnabled(false);
+   _main->ui->pb_annotation->setEnabled(false);
    _main->ui->lbl_title->setText(" ");
    open_overview();
 }
@@ -339,6 +364,7 @@ MainWindow::ProjectReadState::ProjectReadState(MainWindow* main) : WindowState(m
     _main->ui->pb_source->setEnabled(false);
     _main->ui->pb_new->setEnabled(false);
     _main->ui->pb_back->setEnabled(true);
+    _main->ui->pb_annotation->setEnabled(true);
 
     _main->ui->pb_edit->setText("bearbeiten");
     _main->ui->lbl_title->setText(_main->trans_project->get_id());
@@ -406,6 +432,7 @@ MainWindow::ProjectWriteState::ProjectWriteState(MainWindow* main) : WindowState
     _main->ui->pb_source->setEnabled(false);
     _main->ui->pb_edit->setEnabled(true);
     _main->ui->pb_back->setEnabled(false);
+    _main->ui->pb_annotation->setEnabled(true);
 
     _main->ui->pb_edit->setText("speichern");
 

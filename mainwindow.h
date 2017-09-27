@@ -36,6 +36,7 @@
 #include "helpdialog.h"
 #include "createprojectdialog.h"
 #include "processdialog.h"
+#include "annotationsdialog.h"
 
 #include "datelib.h"
 
@@ -102,6 +103,9 @@ public slots:
     void set_source();
     void handle_command();
     void show_info();
+    void show_person_dialog();
+    void show_today();
+    void show_annotations();
 
 };
 

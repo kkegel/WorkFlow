@@ -5,6 +5,7 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QPushButton>
+#include <QPlainTextEdit>
 #include <QComboBox>
 #include <QLineEdit>
 #include <QCalendarWidget>

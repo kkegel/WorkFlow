@@ -30,6 +30,7 @@ void ProcessDialog::init_data(){
     ui->cb_responsible->setCurrentIndex(ui->cb_responsible->findData(process->get_responsible(), Qt::DisplayRole));
     ui->cw_start->setSelectedDate(process->get_start_time());
     ui->cw_end->setSelectedDate(process->get_end_time());
+    ui->input_annotation->setPlainText(process->get_annotation());
 
     if(process->get_state() != NULL){
 
@@ -94,8 +95,9 @@ void ProcessDialog::_m_accept(){
     QDate end = ui->cw_end->selectedDate();
     QString name = ui->input_name->text();
     QString responsible = ui->cb_responsible->currentText();
+    QString anno = ui->input_annotation->toPlainText();
 
-    *process = Process(start, end, name, responsible, hint);
+    *process = Process(start, end, name, responsible, hint, anno);
 
     accept();
 }

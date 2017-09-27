@@ -18,6 +18,9 @@ CreateProjectDialog::CreateProjectDialog(Project* project, QWidget *parent) :
 
     if(project->get_id().compare("") != 0){
         ui->input_id->setEnabled(false);
+        //ui->cw_start->setEnabled(false);
+        //ui->cw_end->setEnabled(false);
+        //ui->pb_save->setEnabled(false);
     }
 
 }
