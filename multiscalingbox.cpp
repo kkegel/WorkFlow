@@ -149,6 +149,11 @@ void MultiScalingBox::build_layout(QString mode){
                 //pb->setEnabled(false);
                 pb->setText("[[]]");
                 first = false;
+            }else if(mode.compare("_t_over") == 0){
+                Project* p = dynamic_cast<Project*>(item);
+                if(p.get_processes().size() == 0){
+                    state->setStyleSheet("background-color: #b0bec5");
+                }
             }
 
             rescale_layout();
