@@ -12,3 +12,11 @@ QDate first_day_of_kw(int kw, int year){
 
     return date;
 }
+
+bool is_valid_difference(QDate start, QDate end){
+ 
+    if(start.toJulianDay() < end.toJulianDay(){
+        return true;
+    }
+    return false;
+}
