@@ -52,11 +52,14 @@ void MainWindow::_r_start(){
 }
 
 void MainWindow::create_new_element(){
+    if(check_input()){
     state->create_new_element();
+    }
 }
 
 void MainWindow::load_new_sector(){
 
+    if(check_input()){
     QDate front = first_day_of_kw(ui->sb_from_kw->value(), ui->sb_from_year->value());
     QDate back = first_day_of_kw(ui->sb_to_kw->value(), ui->sb_to_year->value());
 
@@ -64,47 +67,60 @@ void MainWindow::load_new_sector(){
     ms_box.set_back_date(back);
 
     state->reload();
+    }
 }
 
 void MainWindow::open_project_reading_mode(){
 
+    if(check_input()){
     QPushButton* s = dynamic_cast<QPushButton*>(sender());
     trans_project = project_manager.get_project_by_id(s->objectName());
     state->open_project_read(trans_project->get_id());
+    }
 }
 
 void MainWindow::open_project_writing_mode(){
 
+    if(check_input()){
     if(!state->open_project_write(trans_project->get_id())){
         QErrorMessage* err = new QErrorMessage();
         err->showMessage("Kein Zugriff, da ein anderer PC das Projekt bereits im Schreibmodus geöffnet hat.");
+    }
     }
 }
 
 void MainWindow::close_project_writing_mode(){
 
+    if(check_input()){
     trans_project->set_writeable(true);
     project_manager.save_project(trans_project);
     state->open_project_read(trans_project->get_id());
+    }
 }
 
 void MainWindow::open_project_overview(){
 
+    if(check_input()){
     trans_project = nullptr;
     state->open_overview();
+    }
 }
 
 void MainWindow::reload_content_from_data(){
 
+    if(check_input()){
     project_manager.reload_all_projects();
     state->reload();
+    }
 }
 
 void MainWindow::handle_new_project(){
 
+    if(check_input()){
     project_manager.save_project(trans_project);
     project_manager.reload_all_projects();
     state->reload();
+    }
 }
 
 void MainWindow::edit_existing_project(){
@@ -116,14 +132,18 @@ void MainWindow::edit_existing_project(){
 
 void MainWindow::handle_new_process(){
 
+    if(check_input()){
     trans_project->add_process(*trans_process);
     save_and_reload();
+    }
 }
 
 void MainWindow::save_and_reload(){
-
+    
+    if(check_input()){
     project_manager.save_project(trans_project);
     state->reload();
+    }
 }
 
 void MainWindow::show_info(){
@@ -140,6 +160,17 @@ void MainWindow::show_person_dialog(){
 void MainWindow::show_annotations(){
     AnnotationsDialog* ad = new AnnotationsDialog(trans_project);
     ad->show();
+}
+
+bool MainWindow::check_input(){
+ 
+    if(is_valid_difference(first_day_of_kw(ui->sb_from_kw->value(), ui->sb_from_year->value()),
+                           first_day_of_kw(ui->sb_to_kw->value(), ui->sb_to_year->value())){
+        return true;
+    }
+    QErrorMessage* err = new QErrorMessage();
+    err->showMessage("Anzeigeparameter sind fehlerhaft. Ansicht kann nicht aktualisiert werden");
+    return false;
 }
 
 void MainWindow::show_today(){
