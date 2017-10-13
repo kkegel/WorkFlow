@@ -79,6 +79,8 @@ public:
     void load_base_layout();
     void init_layout_elements();
     void connect_project_cells(QString  mode);
+    
+    bool check_input();
 
     QString get_element_title_from_push_button(QPushButton* pb, std::vector<Project>* items);
     QString get_element_title_from_push_button(QPushButton* pb, std::vector<Process>* items);
