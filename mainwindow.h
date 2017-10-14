@@ -10,7 +10,9 @@
 #include <QStringList>
 
 #include <QLayout>
+#include <QWidget>
 #include <QHBoxLayout>
+#include <QSpacerItem>
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QPushButton>
@@ -85,6 +87,7 @@ public:
     QString get_element_title_from_push_button(QPushButton* pb, std::vector<Project>* items);
     QString get_element_title_from_push_button(QPushButton* pb, std::vector<Process>* items);
 
+    QHBoxLayout* barLayout = nullptr;
 
     void clear_layout(QLayout* layout);
 

@@ -10,6 +10,12 @@
     <height>677</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="windowTitle">
    <string>ProjectManagement v.2 pm+</string>
   </property>
@@ -172,14 +178,27 @@
      </widget>
     </item>
     <item>
-     <layout class="QVBoxLayout" name="mainContainer">
-      <property name="topMargin">
-       <number>0</number>
+     <widget class="QScrollArea" name="scrollArea">
+      <property name="widgetResizable">
+       <bool>true</bool>
       </property>
-      <item>
-       <layout class="QHBoxLayout" name="barLayout"/>
-      </item>
-     </layout>
+      <widget class="QWidget" name="scrollContent">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>1076</width>
+         <height>413</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </widget>
     </item>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -208,19 +227,6 @@
            <string>+</string>
           </property>
          </widget>
-        </item>
-        <item>
-         <spacer name="verticalSpacer">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
         </item>
        </layout>
       </item>
@@ -255,19 +261,6 @@
           </property>
          </widget>
         </item>
-        <item>
-         <spacer name="verticalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
        </layout>
       </item>
      </layout>
@@ -297,7 +290,7 @@
       <item>
        <widget class="QPushButton" name="pb_cmd">
         <property name="enabled">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="text">
          <string>ausführen</string>
@@ -307,7 +300,7 @@
       <item>
        <widget class="QLabel" name="label_13">
         <property name="enabled">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="text">
          <string>Befehl:</string>
@@ -317,7 +310,7 @@
       <item>
        <widget class="QLineEdit" name="input_cmd">
         <property name="enabled">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
        </widget>
       </item>

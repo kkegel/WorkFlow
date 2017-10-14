@@ -13,6 +13,15 @@ MainWindow::MainWindow(QWidget *parent) :
     trans_process = nullptr;
     user_index = UserIndex(project_manager.get_data_handler());
 
+    QWidget* scrollContainer = ui->scrollContent;
+    QVBoxLayout* scrollContentL = new QVBoxLayout(scrollContainer);
+    barLayout = new QHBoxLayout();
+    scrollContentL->addLayout(barLayout);
+    QSpacerItem* spi = new QSpacerItem(10, 10, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    spi->setAlignment(Qt::AlignVCenter);
+    scrollContentL->addItem(spi);
+    scrollContainer->setLayout(scrollContentL);
+
     init_layout_elements();
     _r_start();
     //qApp->processEvents();
@@ -165,7 +174,7 @@ void MainWindow::show_annotations(){
 bool MainWindow::check_input(){
  
     if(is_valid_difference(first_day_of_kw(ui->sb_from_kw->value(), ui->sb_from_year->value()),
-                           first_day_of_kw(ui->sb_to_kw->value(), ui->sb_to_year->value())){
+                           first_day_of_kw(ui->sb_to_kw->value(), ui->sb_to_year->value()))){
         return true;
     }
     QErrorMessage* err = new QErrorMessage();
@@ -356,7 +365,7 @@ bool MainWindow::OverviewState::open_overview(){
     _main->ms_box.build_layout();
     _main->content_l = _main->ms_box.get_layout_container();
     _main->update();
-    _main->ui->barLayout->addLayout(_main->content_l);
+    _main->barLayout->addLayout(_main->content_l);
     _main->update();
     _main->connect_project_cells("overview");
 
@@ -365,7 +374,7 @@ bool MainWindow::OverviewState::open_overview(){
 
 bool MainWindow::OverviewState::open_project_read(QString id){
 
-    _main->clear_layout(_main->ui->barLayout);
+    _main->clear_layout(_main->barLayout);
     _main->ms_box.clear_all();
     _main->state = new ProjectReadState(_main);
 
@@ -421,7 +430,7 @@ bool MainWindow::ProjectReadState::open_project_read(QString id){
     }
 
     _main->ms_box.build_layout("_f_over");
-    _main->ui->barLayout->addLayout(_main->ms_box.get_layout_container());
+    _main->barLayout->addLayout(_main->ms_box.get_layout_container());
     _main->connect_project_cells("read");
 
     return true;
@@ -429,7 +438,7 @@ bool MainWindow::ProjectReadState::open_project_read(QString id){
 
 bool MainWindow::ProjectReadState::open_overview(){
 
-    _main->clear_layout(_main->ui->barLayout);
+    _main->clear_layout(_main->barLayout);
     _main->ms_box.clear_all();
     _main->state = new OverviewState(_main);
 
@@ -443,7 +452,7 @@ bool MainWindow::ProjectReadState::open_project_write(QString id){
     }
     _main->project_manager.open_edit_mode(id);
 
-    _main->clear_layout(_main->ui->barLayout);
+    _main->clear_layout(_main->barLayout);
     _main->ms_box.clear_all();
     _main->state = new ProjectWriteState(_main);
 
@@ -475,7 +484,7 @@ MainWindow::ProjectWriteState::ProjectWriteState(MainWindow* main) : WindowState
 
 bool MainWindow::ProjectWriteState::open_project_read(QString id){
 
-    _main->clear_layout(_main->ui->barLayout);
+    _main->clear_layout(_main->barLayout);
     _main->ms_box.clear_all();
     _main->state = new ProjectReadState(_main);
 
@@ -495,7 +504,7 @@ bool MainWindow::ProjectWriteState::open_project_write(QString id){
     }
 
     _main->ms_box.build_layout("_f_over");
-    _main->ui->barLayout->addLayout(_main->ms_box.get_layout_container());
+    _main->barLayout->addLayout(_main->ms_box.get_layout_container());
     _main->connect_project_cells("write");
 
     return true;
