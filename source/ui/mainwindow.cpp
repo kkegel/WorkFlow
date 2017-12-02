@@ -90,6 +90,7 @@ void MainWindow::open_project_reading_mode(){
 
 void MainWindow::open_project_writing_mode(){
 
+    reload_content_from_data();
     if(check_input()){
     if(!state->open_project_write(trans_project->get_id())){
         QErrorMessage* err = new QErrorMessage();

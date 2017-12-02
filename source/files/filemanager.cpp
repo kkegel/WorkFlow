@@ -32,14 +32,21 @@ bool FileManager::set_to_file(QString id, QString content){
 }
 
 void FileManager::set_source(QString source){
-    QString path = QDir::currentPath();
+    QString path = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
+    if (!QDir(path).exists()) {
+            if (!QDir().mkdir(path)) {
+                std::cout << "no permissions to build file!" << std::endl;
+            }
+        }
     path += "/stats.txt";
+    std::cout << path.toStdString() << std::endl;
     ProjectFileWriter::set_to_file(path, source);
     PATH_ROOT = source;
 }
 
 QString FileManager::get_source(){
-    QString path = QDir::currentPath();
+    QString path = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
     path += "/stats.txt";
+    std::cout << path.toStdString() << std::endl;
     return ProjectFileReader::get_file(path);
 }

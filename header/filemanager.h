@@ -2,10 +2,14 @@
 #define FILEMANAGER_H
 
 #include <QString>
+#include <QStandardPaths>
 #include <QDir>
 
 #include "projectfilereader.h"
 #include "projectfilewriter.h"
+
+#include <stdio.h>
+#include <iostream>
 
 class FileManager
 {
