@@ -216,7 +216,7 @@ void MainWindow::show_today(){
         int ej = QDate::currentDate().addDays(12).year();
 
         ui->sb_from_kw->setValue(sw); ui->sb_from_year->setValue(sj);
-        ui->sb_to_kw->setValue(ew); ui->sb_to_year->setValue(sj);
+        ui->sb_to_kw->setValue(ew); ui->sb_to_year->setValue(ej);
         ms_box.set_front_date(first_day_of_kw(sw, sj));
         ms_box.set_back_date(first_day_of_kw(ew, ej));
         state->reload();

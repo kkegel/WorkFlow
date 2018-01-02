@@ -177,6 +177,8 @@ void MultiScalingBox::build_header(){
     int shown_days = front_date.daysTo(back_date);
     int start_kw = front_date.weekNumber();
 
+    QDate it_date(front_date.year(), front_date.month(), front_date.day());
+
     int base = 0;
     int diff = shown_days/7; //number weeks (only full weeks)
     std::vector<int> displayed_days;
@@ -198,8 +200,8 @@ void MultiScalingBox::build_header(){
 
         if(i % 7 == 1){
             //displayed_days.erase(displayed_days.begin());
-            head_text = "|" + QString::number(start_kw);
-            start_kw++;
+            head_text = "|" + QString::number(it_date.weekNumber());
+            it_date = it_date.addDays(7);
         }else{
             if(shown_days <= 28){
                 head_text = "|";
