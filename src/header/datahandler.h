@@ -73,6 +73,8 @@ public:
 
     virtual bool set_project(Project p) = 0;
 
+    virtual bool delete_project(QString id) = 0;
+
     QString get_type();
 
     virtual void set_source(QString source) = 0;

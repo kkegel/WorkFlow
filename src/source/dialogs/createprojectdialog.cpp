@@ -15,13 +15,17 @@ CreateProjectDialog::CreateProjectDialog(Project* project, QWidget *parent) :
     ui->input_id->setText(project->get_id());
     ui->cw_start->setSelectedDate(project->get_start_time());
     ui->cw_end->setSelectedDate(project->get_end_time());
+    edit_state = false;
 
     if(project->get_id().compare("") != 0){
-        ui->input_id->setEnabled(false);
-        ui->cw_start->setEnabled(false);
-        ui->cw_end->setEnabled(false);
-        ui->pb_save->setEnabled(false);
+        //ui->input_id->setEnabled(false);
+        //ui->cw_start->setEnabled(false);
+        //ui->cw_end->setEnabled(false);
+        //ui->pb_save->setEnabled(false);
+        edit_state = true;
     }
+
+    old_id = QString(project->get_id());
 
 }
 
@@ -74,7 +78,11 @@ void CreateProjectDialog::_m_accept(){
     QDate start = ui->cw_start->selectedDate();
     QDate end = ui->cw_end->selectedDate();
 
-    *project = Project(start, end, id, true, *(project->get_processes_p()), project->get_state_hint());
+    if(edit_state && old_id.compare(id) != 0){
+        id = "#?#" + old_id + "#!#" + id;
+    }
+
+    *project = Project(start, end, id, !edit_state, *(project->get_processes_p()), project->get_state_hint());
 
     accept();
 }

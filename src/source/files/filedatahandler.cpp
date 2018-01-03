@@ -68,20 +68,46 @@ std::vector<QString> FileDataHandler::get_stored_project_ids(){
 
 bool FileDataHandler::set_project(Project p){
 
+    QString p_id = p.get_id();
+    QString old_id = "";
+    if(p_id.section("",0,3).compare("#?#") == 0){
+        QRegularExpression re("#\?#(.*?)#!#");
+        QRegularExpressionMatch match = re.match(p_id);
+        if (match.hasMatch()) {
+            old_id = match.captured(0).section("",4,match.captured(0).size()-3);
+            re = QRegularExpression("(?<=#!#).*$");
+            match = re.match(p_id);
+            p_id = match.captured(0);
+        }
+    }
+
+    std::cout << p_id.toStdString() << std::endl;
+    std::cout << old_id.toStdString() << std::endl;
+
     bool is_available = false;
 
     for(QString id : get_all_project_ids()){
-         if(id.compare(p.get_id()) == 0){
+         if(id.compare(p_id) == 0){
              is_available = true;
              break;
          }
     }
 
     if(!is_available){
-        add_to_index(p.get_id());
+        add_to_index(p_id);
     }
 
-    return file_manager.set_to_file(p.get_id(), build_data_from_project(p));
+    p = Project(p.get_start_time(), p.get_end_time(), p_id, p.is_writable(), *(p.get_processes_p()), p.get_state_hint());
+    return delete_project(old_id) && file_manager.set_to_file(p_id, build_data_from_project(p));
+}
+
+bool FileDataHandler::delete_project(QString id){
+
+    QString index = file_manager.get_file("index");
+    std::cout << index.toStdString() << std::endl;
+    index = index.replace("<project-source>\n"+id+"\n</project-source>\n", "");
+    std::cout << std::endl << index.toStdString() << std::endl;
+    return file_manager.set_to_file("index", index);
 }
 
 Project FileDataHandler::build_project_from_data(QString data){

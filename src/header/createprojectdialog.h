@@ -34,6 +34,8 @@ private:
 
     Ui::CreateProjectDialog *ui;
     Project* project;
+    bool edit_state;
+    QString old_id;
 
 private slots:
 

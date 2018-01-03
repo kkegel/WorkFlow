@@ -3,9 +3,13 @@
 
 #include <QString>
 #include <QStringList>
+#include <QRegularExpression>
+#include <QRegularExpressionMatch>
 #include <QDate>
 
 #include <vector>
+#include <stdio.h>
+#include <iostream>
 #include <exception>
 #include <thread>
 #include <chrono>
@@ -85,6 +89,8 @@ public:
      */
 
     bool set_project(Project p) override;
+
+    bool delete_project(QString id) override;
 
     void set_source(QString source) override;
 

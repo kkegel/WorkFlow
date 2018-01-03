@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>531</width>
-    <height>380</height>
+    <width>595</width>
+    <height>412</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
    <item>
     <widget class="QLabel" name="label_4">
      <property name="text">
-      <string>Neues Projekt anlegen:</string>
+      <string>Projekt:</string>
      </property>
     </widget>
    </item>
@@ -34,7 +34,7 @@
    <item>
     <widget class="QLabel" name="label_3">
      <property name="text">
-      <string>Projektkennung:</string>
+      <string>eindeutige Projektkennung:</string>
      </property>
     </widget>
    </item>

@@ -127,9 +127,11 @@ void MainWindow::reload_content_from_data(){
 void MainWindow::handle_new_project(){
 
     if(check_input()){
-    project_manager.save_project(trans_project);
-    project_manager.reload_all_projects();
-    state->reload();
+        project_manager.save_project(trans_project);
+        project_manager.reload_all_projects();
+        state->open_project_read(trans_project->get_id());
+        state->open_overview();
+        state->reload();
     }
 }
 
