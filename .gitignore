@@ -32,7 +32,6 @@
 *.app
 
 # QT Creator
-*.pro
 *.user
 
 #OS X
