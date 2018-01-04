@@ -47,14 +47,14 @@ for the following instructions, you should have compiled WorkFlow first.
 in the following example, a user with the name ``Secretary M. Fisher `` and a user with the name ``Office Workshop`` are created.
 
 ```
-<data>
 <user>
+<name>
 Secretary M. Fisher
-</user>
-<user>
+</name>
+<name>
 Office Workshop
+</name>
 </user>
-</data>
 ```
 
 5. now, you can start WorkFlow -> go to Source -> select the ``index.xml`` -> restart the app -> everything will work. to select anothe working dir - just select an other index file.
