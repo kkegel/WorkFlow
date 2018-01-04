@@ -43,7 +43,7 @@ for the following instructions, you should have compiled WorkFlow first.
 </index>
 ```
 
-4. open ``__userdata.xml`` and write the following lines. between ``<data>`` and ``</data>`` you can create as many users as you want. a user is not a user in the meaning of a authentication but as selectable person - so the number of users in the file and the number of 'real' users of WorkFlow can vary. in WorkFlow users are virtual persons beeing responsible for tasks. you have to create min. one user (note that the file is no default xml, so don't use additional tabs, spaces or newlines)
+4. open ``__userdata.xml`` and write the following lines. between ``<user>`` and ``</user>`` you can create as many users as you want. a user is not a user in the meaning of a authentication but as selectable person - so the number of users in the file and the number of 'real' users of WorkFlow can vary. in WorkFlow users are virtual persons beeing responsible for tasks. you have to create min. one user (note that the file is no default xml, so don't use additional tabs, spaces or newlines)
 in the following example, a user with the name ``Secretary M. Fisher `` and a user with the name ``Office Workshop`` are created.
 
 ```
