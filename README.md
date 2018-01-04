@@ -57,4 +57,4 @@ Office Workshop
 </data>
 ```
 
-5. now, you can start WorkFlow -> go to Source -> select the ``index.xml`` -> restart the app -> everything will work. to select anothe working dir - just select an other index file
+5. now, you can start WorkFlow -> go to Source -> select the ``index.xml`` -> restart the app -> everything will work. to select anothe working dir - just select an other index file.
