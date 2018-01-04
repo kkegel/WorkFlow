@@ -8,7 +8,7 @@ note the use of the QT framework https://www.qt.io also under under GPL & LGPLv3
 ## Overview
 
 for detailed usage information, look at
-[userguide](../blob/master/USERGUIDE.md).
+[userguide](./master/USERGUIDE.md).
 
 
 ## Build Instructions
