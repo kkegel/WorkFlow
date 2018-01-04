@@ -50,7 +50,7 @@ void CreateProjectDialog::check_accept(){
 
         if(start.toJulianDay() > end.toJulianDay()){
             QErrorMessage* err = new QErrorMessage();
-            err->showMessage("Projektdauer muss größer 0 Tage sein");
+            err->showMessage("duration has to be more than 0 days");
             check = false;
         }
     }catch(std::exception){
@@ -61,7 +61,7 @@ void CreateProjectDialog::check_accept(){
         _m_accept();
     }else{
         QErrorMessage* err = new QErrorMessage();
-        err->showMessage("Projekt konnte auf Grund von Fehlern nicht angelegt werden");
+        err->showMessage("project could not be crated - please remove your faults");
     }
 
 }

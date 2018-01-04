@@ -19,7 +19,7 @@
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Nutzer:</string>
+        <string>user:</string>
        </property>
       </widget>
      </item>
@@ -38,7 +38,7 @@
    <item>
     <widget class="QLabel" name="label_3">
      <property name="text">
-      <string>Aufgaben:</string>
+      <string>tasks:</string>
      </property>
     </widget>
    </item>
@@ -47,21 +47,21 @@
      <item>
       <widget class="QLabel" name="label_6">
        <property name="text">
-        <string>Projekt</string>
+        <string>project</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QLabel" name="label_5">
        <property name="text">
-        <string>Bezeichnung</string>
+        <string>name</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QLabel" name="label_4">
        <property name="text">
-        <string>Fertigzustellen bis</string>
+        <string>todo</string>
        </property>
       </widget>
      </item>
@@ -108,7 +108,7 @@
      <item>
       <widget class="QPushButton" name="pb_close">
        <property name="text">
-        <string>schließen</string>
+        <string>close</string>
        </property>
       </widget>
      </item>

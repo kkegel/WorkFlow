@@ -94,7 +94,7 @@ void MainWindow::open_project_writing_mode(){
     if(check_input()){
     if(!state->open_project_write(trans_project->get_id())){
         QErrorMessage* err = new QErrorMessage();
-        err->showMessage("Kein Zugriff, da ein anderer PC das Projekt bereits im Schreibmodus geöffnet hat.");
+        err->showMessage("no access - the project is already in edit mode on another pc.");
     }
     }
 }
@@ -180,7 +180,7 @@ bool MainWindow::check_input(){
         return true;
     }
     QErrorMessage* err = new QErrorMessage();
-    err->showMessage("Anzeigeparameter sind fehlerhaft. Ansicht kann nicht aktualisiert werden");
+    err->showMessage("reload not possible - selected time is not valid");
     return false;
 }
 
@@ -226,20 +226,19 @@ void MainWindow::show_today(){
     } else{
 
         QErrorMessage* em = new QErrorMessage();
-        em->showMessage("bitte vorerst speichern");
+        em->showMessage("please save first");
     }
 }
 
 void MainWindow::set_source(){
 
-    QString source = QFileDialog::getOpenFileName(this, ("Index auswählen"),
+    QString source = QFileDialog::getOpenFileName(this, ("select index"),
                                                      "/",
-                                                     ("XML-Datei (*.xml)"));
+                                                     ("XML-file (*.xml)"));
     if(source != nullptr && !source.isNull()){
         project_manager.set_source(source);
         QErrorMessage* em = new QErrorMessage();
-        em->showMessage("Änderungen wurden übernommen. Bitte starten sie das Programm neu. "
-                        "Sollte es zu unerwartetem Verhalten kommen, wenden sie sich bitte an die zuständige Fachperson.");
+        em->showMessage("apply changes, please restart the program");
 
     }
 }

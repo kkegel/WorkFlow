@@ -52,7 +52,7 @@ void ProcessDialog::check_accept(){
     try{
         if(ui->input_name->text().compare("") == 0 || ui->cb_responsible->currentText().compare("") == 0){
             QErrorMessage* err = new QErrorMessage();
-            err->showMessage("Eingabefelder dürfen nicht leer sein");
+            err->showMessage("inputs must not be empty");
             check = false;
         }
 
@@ -61,7 +61,7 @@ void ProcessDialog::check_accept(){
 
         if(start.toJulianDay() > end.toJulianDay()){
             QErrorMessage* err = new QErrorMessage();
-            err->showMessage("Prozessdauer muss größer 0 Tage sein");
+            err->showMessage("duration has to be more than 0 days");
             check = false;
         }
     }catch(std::exception){
@@ -72,7 +72,7 @@ void ProcessDialog::check_accept(){
         _m_accept();
     }else{
         QErrorMessage* err = new QErrorMessage();
-        err->showMessage("Prozess konnte auf Grund von Fehlern nicht angelegt werden");
+        err->showMessage("process could not be created - please remove your faults");
     }
 
 }

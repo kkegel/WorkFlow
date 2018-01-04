@@ -20,7 +20,7 @@
    <item>
     <widget class="QLabel" name="label_4">
      <property name="text">
-      <string>Projekt:</string>
+      <string>project:</string>
      </property>
     </widget>
    </item>
@@ -34,7 +34,7 @@
    <item>
     <widget class="QLabel" name="label_3">
      <property name="text">
-      <string>eindeutige Projektkennung:</string>
+      <string>unique project name:</string>
      </property>
     </widget>
    </item>
@@ -49,7 +49,7 @@
      <item>
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Beginn:</string>
+        <string>start:</string>
        </property>
       </widget>
      </item>
@@ -63,7 +63,7 @@
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Ende:</string>
+        <string>end:</string>
        </property>
       </widget>
      </item>
@@ -75,7 +75,11 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QCalendarWidget" name="cw_start"/>
+      <widget class="QCalendarWidget" name="cw_start">
+       <property name="locale">
+        <locale language="English" country="UnitedKingdom"/>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="Line" name="line_2">
@@ -85,14 +89,18 @@
       </widget>
      </item>
      <item>
-      <widget class="QCalendarWidget" name="cw_end"/>
+      <widget class="QCalendarWidget" name="cw_end">
+       <property name="locale">
+        <locale language="English" country="UnitedKingdom"/>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
    <item>
     <widget class="QLabel" name="label_5">
      <property name="text">
-      <string>Einzelne Arbeitsschritte können anschließend im Bearbeitungsmodus hinzugefügt werden</string>
+      <string>single processes/steps can be edited later</string>
      </property>
     </widget>
    </item>
@@ -134,14 +142,14 @@
      <item>
       <widget class="QPushButton" name="pb_cancel">
        <property name="text">
-        <string>abbrechen</string>
+        <string>cancel</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="pb_save">
        <property name="text">
-        <string>speichern</string>
+        <string>save</string>
        </property>
       </widget>
      </item>

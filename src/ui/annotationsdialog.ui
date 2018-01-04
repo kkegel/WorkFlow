@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Anmerkungen/Informationen:</string>
+      <string>annotations/information:</string>
      </property>
     </widget>
    </item>
@@ -54,7 +54,7 @@
    <item>
     <widget class="QLabel" name="label_2">
      <property name="text">
-      <string>Anmerkungen können im Bearbeitungsmodus bearbeitet werden</string>
+      <string>annotations can be edited only in edit mode</string>
      </property>
     </widget>
    </item>

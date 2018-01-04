@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>532</width>
-    <height>599</height>
+    <width>595</width>
+    <height>633</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
    <item>
     <widget class="QLabel" name="label_5">
      <property name="text">
-      <string>Arbeitsschritt erstellen/bearbeiten</string>
+      <string>edit/create process</string>
      </property>
     </widget>
    </item>
@@ -34,7 +34,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Name:</string>
+      <string>name:</string>
      </property>
     </widget>
    </item>
@@ -49,7 +49,7 @@
      <item>
       <widget class="QLabel" name="label_4">
        <property name="text">
-        <string>Zuständiger:</string>
+        <string>responsible:</string>
        </property>
       </widget>
      </item>
@@ -73,7 +73,7 @@
      <item>
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>Beginn:</string>
+        <string>start:</string>
        </property>
       </widget>
      </item>
@@ -87,7 +87,7 @@
      <item>
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Ende:</string>
+        <string>end:</string>
        </property>
       </widget>
      </item>
@@ -123,7 +123,7 @@
    <item>
     <widget class="QLabel" name="label_6">
      <property name="text">
-      <string>Anmerkungen/Hinweise:</string>
+      <string>annotation:</string>
      </property>
     </widget>
    </item>
@@ -157,7 +157,7 @@
         </font>
        </property>
        <property name="text">
-        <string>in Arbeit</string>
+        <string>in progress</string>
        </property>
       </widget>
      </item>
@@ -172,7 +172,7 @@
         <string notr="true"/>
        </property>
        <property name="text">
-        <string>Erledigt</string>
+        <string>done</string>
        </property>
        <property name="iconSize">
         <size>
@@ -222,14 +222,14 @@
      <item>
       <widget class="QPushButton" name="pb_cancel">
        <property name="text">
-        <string>abbrechen</string>
+        <string>cancel</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="pb_save">
        <property name="text">
-        <string>speichern</string>
+        <string>save</string>
        </property>
       </widget>
      </item>

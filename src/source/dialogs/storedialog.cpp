@@ -49,7 +49,7 @@ void StoreDialog::restore(){
     int i = s->objectName().toInt();
 
     QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, "action required", "are you sure to restore the selected project",
+    reply = QMessageBox::question(this, "action required", "are you sure to restore the selected project?",
                                   QMessageBox::Yes|QMessageBox::No);
     if (reply == QMessageBox::Yes) {
         p_store->at(i).set_open();

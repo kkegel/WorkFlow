@@ -29,7 +29,7 @@
       <item>
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>von (KW)</string>
+         <string>from (CW)</string>
         </property>
        </widget>
       </item>
@@ -56,7 +56,7 @@
       <item>
        <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>bis (KW)</string>
+         <string>to (CW)</string>
         </property>
        </widget>
       </item>
@@ -86,14 +86,14 @@
       <item>
        <widget class="QPushButton" name="pb_new_sector">
         <property name="text">
-         <string>laden</string>
+         <string>load</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="pb_today">
         <property name="text">
-         <string>heute</string>
+         <string>today</string>
         </property>
        </widget>
       </item>
@@ -113,14 +113,14 @@
       <item>
        <widget class="QPushButton" name="pb_person">
         <property name="text">
-         <string>Nutzer</string>
+         <string>user</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="pb_source">
         <property name="text">
-         <string>Quelle</string>
+         <string>source</string>
         </property>
        </widget>
       </item>
@@ -140,21 +140,21 @@
       <item>
        <widget class="QPushButton" name="pb_back">
         <property name="text">
-         <string>zurück</string>
+         <string>back</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="pb_reload">
         <property name="text">
-         <string>aktualisieren</string>
+         <string>reload</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="pb_edit">
         <property name="text">
-         <string>bearbeiten</string>
+         <string>edit</string>
         </property>
        </widget>
       </item>
@@ -257,7 +257,7 @@
            </size>
           </property>
           <property name="text">
-           <string>Informationen</string>
+           <string>information</string>
           </property>
          </widget>
         </item>
@@ -293,7 +293,7 @@
          <bool>false</bool>
         </property>
         <property name="text">
-         <string>ausführen</string>
+         <string>do</string>
         </property>
        </widget>
       </item>
@@ -303,7 +303,7 @@
          <bool>false</bool>
         </property>
         <property name="text">
-         <string>Befehl:</string>
+         <string>command</string>
         </property>
        </widget>
       </item>
@@ -317,7 +317,7 @@
       <item>
        <widget class="QPushButton" name="pb_store">
         <property name="text">
-         <string>Archiv</string>
+         <string>store</string>
         </property>
        </widget>
       </item>
@@ -327,7 +327,7 @@
          <bool>false</bool>
         </property>
         <property name="text">
-         <string>archivieren</string>
+         <string>to store</string>
         </property>
        </widget>
       </item>
@@ -354,7 +354,7 @@
          </size>
         </property>
         <property name="text">
-         <string>Zeitstrahl:</string>
+         <string>timeline:</string>
         </property>
        </widget>
       </item>
@@ -370,7 +370,7 @@
          <string notr="true">background-color : #e0f2f1;</string>
         </property>
         <property name="text">
-         <string>davor</string>
+         <string>before</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -389,7 +389,7 @@
          <string notr="true">background-color : #1e88e5;</string>
         </property>
         <property name="text">
-         <string>verlauf</string>
+         <string>during</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -408,7 +408,7 @@
          <string notr="true">background-color : #e8eaf6;</string>
         </property>
         <property name="text">
-         <string>danach</string>
+         <string>after</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -442,7 +442,7 @@
            </size>
           </property>
           <property name="text">
-           <string>Status:</string>
+           <string>status:</string>
           </property>
          </widget>
         </item>
@@ -458,7 +458,7 @@
            <string notr="true">background-color : #ffee58;</string>
           </property>
           <property name="text">
-           <string>spät</string>
+           <string>late</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -477,7 +477,7 @@
            <string notr="true">background-color : #ef5350</string>
           </property>
           <property name="text">
-           <string>achtung</string>
+           <string>warning</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -496,7 +496,7 @@
            <string notr="true">background-color : #b0bec5;</string>
           </property>
           <property name="text">
-           <string>offen</string>
+           <string>open</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -515,7 +515,7 @@
            <string notr="true">background-color : #546e7a</string>
           </property>
           <property name="text">
-           <string>in arbeit</string>
+           <string>in progress</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -534,7 +534,7 @@
            <string notr="true">background-color : #9ccc65;</string>
           </property>
           <property name="text">
-           <string>fertig</string>
+           <string>done</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
