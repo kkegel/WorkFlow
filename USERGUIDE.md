@@ -11,7 +11,7 @@ to see the timeline arounde the current day without any setup, you have to click
 ## project overview
 
 the project overview shows all active projects. if a project is active during a shown day, the day will be displayed blue. if a shown day is a special day within the project, the day is displayed dark blue.
-in front of each project bar is a label with project title and date. at the end of each project bar is a button to open the [project read mode](#project read mode).
+in front of each project bar is a label with project title and date. at the end of each project bar is a button to open the [project read mode](#project-read-mode).
 
 other enabled buttons:
 
@@ -19,12 +19,27 @@ other enabled buttons:
 * source - project index selection
 * reload - reload the current view with fresh data
 * store - opens [store dialog](#store-dialog)
+* '+' - opens [new project dialog](#new-project-dialog)
 
 ### new project dialog
 
+to create a new project, select a project name (note that a project name must be unique)
+you also have to select a valid start and end date.
+
+* save - save the project
+* cancel - close the dialog and discard input
+
 ### store dialog
 
+provides an overview of the stored projects.
+
+* restore - remove the project from store and load them to toe workspace
+
 ### user dialog
+
+overview of each users tasks.
+
+withn the select box, you can select a user and its open tasks are displayed
 
 ## project read mode
 
