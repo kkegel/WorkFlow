@@ -15,10 +15,10 @@ in front of each project bar is a label with project title and date. at the end 
 
 other enabled buttons:
 
-* user - opens [user dialog](#user dialog)
+* user - opens [user dialog](#user-dialog)
 * source - project index selection
 * reload - reload the current view with fresh data
-* store - opens [store dialog](#store dialog)
+* store - opens [store dialog](#store-dialog)
 
 ### new project dialog
 
