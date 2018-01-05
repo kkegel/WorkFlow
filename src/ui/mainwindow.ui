@@ -92,6 +92,9 @@
       </item>
       <item>
        <widget class="QPushButton" name="pb_today">
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
         <property name="text">
          <string>today</string>
         </property>

@@ -29,6 +29,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    if(state->get_state().compare("PROJECT_WRITE_STATE") == 0){
+        trans_project->set_writeable(true);
+        project_manager.save_project(trans_project);
+    }
     delete ui;
 }
 
@@ -340,6 +344,10 @@ MainWindow::OverviewState::OverviewState(MainWindow* main) : WindowState(main){
    open_overview();
 }
 
+QString MainWindow::OverviewState::get_state(){
+    return "OVERVIEW_STATE";
+}
+
 bool MainWindow::OverviewState::open_overview(){
 
     _main->project_manager.load_active_projects();
@@ -401,6 +409,10 @@ MainWindow::ProjectReadState::ProjectReadState(MainWindow* main) : WindowState(m
     connect(_main->ui->pb_edit, SIGNAL(clicked(bool)), _main, SLOT(open_project_writing_mode()));
 
     open_project_read(_main->trans_project->get_id());
+}
+
+QString MainWindow::ProjectReadState::get_state(){
+    return "PROJECT_READ_STATE";
 }
 
 bool MainWindow::ProjectReadState::open_project_read(QString id){
@@ -472,6 +484,10 @@ MainWindow::ProjectWriteState::ProjectWriteState(MainWindow* main) : WindowState
     connect(_main->ui->pb_edit, SIGNAL(clicked(bool)), _main, SLOT(close_project_writing_mode()));
 
     open_project_write(_main->trans_project->get_id());
+}
+
+QString MainWindow::ProjectWriteState::get_state(){
+    return "PROJECT_WRITE_STATE";
 }
 
 bool MainWindow::ProjectWriteState::open_project_read(QString id){
