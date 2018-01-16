@@ -82,7 +82,7 @@ void CreateProjectDialog::_m_accept(){
         id = "#?#" + old_id + "#!#" + id;
     }
 
-    *project = Project(start, end, id, !edit_state, *(project->get_processes_p()), project->get_state_hint());
+    *project = Project(start, end, id, true, *(project->get_processes_p()), project->get_state_hint());
 
     accept();
 }

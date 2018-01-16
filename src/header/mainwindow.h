@@ -125,6 +125,8 @@ public:
     virtual bool create_new_element() = 0;
     virtual bool reload() = 0;
 
+    virtual QString get_state() = 0;
+
     MainWindow* _main;
 
 };
@@ -141,6 +143,8 @@ public:
     bool create_new_element() override;
     bool reload() override;
 
+    QString get_state() override;
+
 };
 
 class MainWindow::ProjectReadState : public WindowState
@@ -155,6 +159,8 @@ public:
     bool create_new_element() override {return false;}
     bool reload() override;
 
+    QString get_state() override;
+
 };
 
 class MainWindow::ProjectWriteState : public WindowState
@@ -168,6 +174,8 @@ public:
     bool open_project_write(QString id) override;
     bool create_new_element() override;
     bool reload() override;
+
+    QString get_state() override;
 
 };
 
