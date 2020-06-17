@@ -1,5 +1,7 @@
 # WorkFlow - Project Management
 
+**Note: thie project is not actively maintained anymore, dependencies may need updates**
+
 ## License
 
 project under GNU GPLv3 - you find a licence copy in this repository.
